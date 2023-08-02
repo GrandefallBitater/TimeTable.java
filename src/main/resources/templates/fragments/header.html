@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <div th:fragment="header-css">
+
+    </div>
+</head>
+<body>
+<div th:fragment="header">
+    <header class="p-3 text-bg-dark">
+        <div class="container">
+            <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                    <image class="bi me-2" width="40" height="32" src="logog.jpg"></image>
+                </a>
+
+                <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                    <li><a href="/" class="nav-link px-2 text-secondary">Главная</a></li>
+                    <li><a sec:authorize="hasRole('ROLE_ADMIN')" href="/create" class="nav-link px-2 text-white">расписание</a></li>
+                    <li><a sec:authorize="hasRole('ROLE_ADMIN')" href="/users" class="nav-link px-2 text-white">пользователи</a></li>
+                    <li><a sec:authorize="hasRole('ROLE_TEACHER')" href="/teacher" class="nav-link px-2 text-white">Преподаватель</a></li>
+                    <li><a href="/about" class="nav-link px-2 text-white">О нас</a></li>
+                </ul>
+
+
+
+                <div class="text-end">
+
+                    <div>
+                        <p sec:authorize="isAuthenticated()">
+                            вошли как <span sec:authentication="name"></span>
+                        </p>
+
+                        <form method="post" action="/log">
+                            <button sec:authorize="hasRole('ROLE_ANONYMOUS')" class="btn btn-outline-light">
+                                войти
+                            </button>
+                        </form>
+                        <form action="/logout">
+                            <button sec:authorize="isAuthenticated()" class="btn btn-outline-light">
+                                выйти
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+</body>
+</html>
