@@ -5,6 +5,8 @@
     <title>Telekanal</title>
     <script th:src="@{jQuery.js}"></script>
     <script th:src="@{createTimeTableScript.js}"></script>
+    <script src="uploadFiles/dragAndDropScript.js"></script>
+    <link rel="stylesheet" href="uploadFiles/inputStyles.css">
 
     <div th:replace="fragments/header :: header-css"></div>
     <div th:replace="fragments/footer :: footer-css"></div>
@@ -34,7 +36,34 @@
     </div>
 
     <div id="createTimeTable">
-        <h1>создание расписания</h1>
+        <h1 style="text-align: center">создание расписания</h1>
+        <div class="UploadContainer">
+            <form method="POST" enctype="multipart/form-data"
+                  action="/upload" style="text-align: center">
+                <div class="planInput" id="upload-container">
+                    <br><img id="upload-image" src="uploadFiles/upload.png"> <br>
+                    <input id="file-input-plan" type="file" name="plan" accept=".txt, .doc, .docx">
+                    <label for="file-input-plan">Выберите файл учебного плана</label> <br>
+                    <span>или перетащите его сюда</span>
+                </div>
+                <div class="audienceInput" id="upload-container">
+                    <br><img id="upload-image" src="uploadFiles/upload.png"> <br>
+                    <input id="file-input-audience" type="file" name="audience" accept=".txt, .doc, .docx">
+                    <label for="file-input-audience">Выберите файл с информацией об аудиториях</label> <br>
+                    <span>или перетащите его сюда</span>
+                </div>
+                <div class="teachersInput" id="upload-container">
+                    <br><img id="upload-image" src="uploadFiles/upload.png"> <br>
+                    <input id="file-input-teachers" type="file" name="teachers" accept=".txt, .doc, .docx">
+                    <label for="file-input-teachers">Выберите файл с информацией об учителях</label> <br>
+                    <span>или перетащите его сюда</span>
+                </div>
+                <br>
+                <div id="submit">
+                    <input type="submit" value="загрузить" style="text-align: center" class="btn btn-outline-dark">
+                </div>
+            </form>
+        </div>
     </div>
     <div id="refreshTimeTable">
         <h1>редактирование расписания</h1>
