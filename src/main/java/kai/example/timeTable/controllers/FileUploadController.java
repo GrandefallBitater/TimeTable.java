@@ -1,6 +1,6 @@
 package kai.example.timeTable.controllers;
 
-import kai.example.timeTable.Services.FileUploadService;
+import kai.example.timeTable.services.FileUploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,4 +25,5 @@ public class FileUploadController {
                                                  @RequestParam("teachers") MultipartFile teachers){
         return fileUploadService.prepareUploadFiles(plan, audience, teachers);
     }
+    //TODO попробуй всё таки сделать здесь через один файл, очень муторно, когда принимается 3
 }

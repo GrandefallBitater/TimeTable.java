@@ -1,13 +1,13 @@
 package kai.example.timeTable.controllers;
 
-import kai.example.timeTable.Services.mainService;
+import kai.example.timeTable.services.mainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class mainController {
+public class MainController {
         @Autowired
         private mainService mainService;
 

@@ -1,4 +1,4 @@
-package kai.example.timeTable.Services;
+package kai.example.timeTable.services;
 
 import org.springframework.stereotype.Service;
 
