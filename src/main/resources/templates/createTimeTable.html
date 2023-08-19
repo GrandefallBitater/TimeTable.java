@@ -39,7 +39,7 @@
         <h1 style="text-align: center">создание расписания</h1>
         <div class="UploadContainer">
             <form method="POST" enctype="multipart/form-data"
-                  action="/upload" style="text-align: center">
+                  action="/upload" target="_blank" style="text-align: center">
                 <div class="planInput" id="upload-container">
                     <br><img id="upload-image" src="uploadFiles/upload.png"> <br>
                     <input id="file-input-plan" type="file" name="plan" accept=".txt, .doc, .docx">
@@ -63,6 +63,14 @@
                     <input type="submit" value="загрузить" style="text-align: center" class="btn btn-outline-dark">
                 </div>
             </form>
+        </div>
+        <div id="createTimeTableDiv">
+            <div style="text-align: center">
+                <img id="upload-image" src="uploadFiles/upload.png">
+                <form action="/create/createTimeTable" method="post" target="_blank">
+                    <input type="submit" value="создать расписание" style="text-align: center" class="btn btn-outline-dark">
+                </form>
+            </div>
         </div>
     </div>
     <div id="refreshTimeTable">
