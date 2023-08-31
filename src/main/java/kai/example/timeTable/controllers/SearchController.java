@@ -1,7 +1,6 @@
 package kai.example.timeTable.controllers;
 
 import kai.example.timeTable.services.SearchService;
-import kai.example.timeTable.stubs.TimeTable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

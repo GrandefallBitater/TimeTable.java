@@ -17,22 +17,30 @@
 <div th:replace="fragments/header :: header"></div>
 
 <div id="phoneImage" style="background: url(phon.jpg);">
+    <div id="notFoundedTimeTable">
+        <div th:if = "${timeTables.isEmpty()}">
+            <div id="chooseYourGroup">
+                <img id="chooseYourGroup-image" src="uploadFiles/upload.png">
+                <p>группа не найдена</p>
+            </div>
+            <div style="height: 450px"></div>
+        </div>
+    </div>
     <div id="foundedTimeTable">
         <div th:each = "timeTable : ${timeTables}" id="timeTableDay">
             <h1>Понедельник</h1>
             <table>
                 <tr>
-                    <td id="tableHeader">название</td>
-                    <td id="tableHeader">время</td>
-                    <td id="tableHeader">номер аудитории</td>
+                    <th>название</th>
+                    <th>время</th>
+                    <th>номер аудитории</th>
                 </tr>
                 <tr>
                     <td>
                         <p th:text="${timeTable.getName()}">
                     </td>
-                    <td th:with="fullTime = ${timeTable.getTime().toLocalTime()},
-                     time = ${fullTime.toString()}">
-                        <p th:text = "${time}">
+                    <td>
+                        <p th:text = "${timeTable.getTime()}">
                     </td>
                     <td>
                         <p th:text="${timeTable.getNumberOfAudience()}">

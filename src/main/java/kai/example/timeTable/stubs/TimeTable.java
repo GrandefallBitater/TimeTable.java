@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Getter
 public class TimeTable {
-    private LocalDateTime time;
+    private String time;
     private String name;
     private int numberOfAudience;
 

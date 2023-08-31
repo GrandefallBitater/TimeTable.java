@@ -16,9 +16,9 @@ public class SearchService {
         if(group == "null"){
             return listTimeTables;
         }
-        listTimeTables.add(new TimeTable(LocalDateTime.now(), "1", 12));
-        listTimeTables.add(new TimeTable(LocalDateTime.now(), "2", 12));
-        listTimeTables.add(new TimeTable(LocalDateTime.now(), "3", 12));
+        listTimeTables.add(new TimeTable("11:40", "1", 12));
+        listTimeTables.add(new TimeTable("12:50", "2", 12));
+        listTimeTables.add(new TimeTable("13:30", "3", 12));
         return listTimeTables;
     }
 }
