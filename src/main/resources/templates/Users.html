@@ -35,33 +35,11 @@
               </form>
           </td>
       </tr>
-      <tr>
-          <td>ruslan</td>
-          <td>321</td>
-          <td>enabled</td>
-          <td>ADMIN</td>
-          <td>
-              <form action="/user/change", method="post">
-                  <button class="btn btn-light" type="submit">изменить</button>
-              </form>
-          </td>
-      </tr>
-      <tr>
-          <td>rinat</td>
-          <td>123</td>
-          <td>enabled</td>
-          <td>ADMIN</td>
-          <td>
-              <form action="/user/change", method="post">
-                  <button class="btn btn-light" type="submit">изменить</button>
-              </form>
-          </td>
-      </tr>
-      <tr>
-          <td>user</td>
-          <td>123</td>
-          <td>enabled</td>
-          <td>USER</td>
+      <tr th:each = "user : ${users}">
+          <td th:text = "${user.getName()}"></td>
+          <td th:text = "${user.getPassword()}"></td>
+          <td th:text = "${user.isEnabled()}"></td>
+          <td>User</td>
           <td>
               <form action="/user/change", method="post">
                   <button class="btn btn-light" type="submit">изменить</button>

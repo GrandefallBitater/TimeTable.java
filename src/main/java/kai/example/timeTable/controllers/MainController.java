@@ -10,23 +10,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class MainController {
-        private mainService mainService;
+    private mainService mainService;
 
-        @Autowired
-        public MainController(mainService mainService){
-                this.mainService = mainService;
-        }
+    @Autowired
+    public MainController(mainService mainService) {
+        this.mainService = mainService;
+    }
 
-        @RequestMapping("/")
-        public String main(Model model){return "main";}
+    @RequestMapping("/")
+    public String main(Model model) {
+        return "main";
+    }
 
-        @RequestMapping("/about")
-        public String about(Model model){
-                return "aboutUs";
-        }
-
-        @RequestMapping("/users")
-        public String users(Model model){
-                return "Users";
-        }
+    @RequestMapping("/about")
+    public String about(Model model) {
+        return "aboutUs";
+    }
 }
