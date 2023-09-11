@@ -20,7 +20,7 @@
 <div id="phoneImage" style="background: url(phon.jpg);">
 
 </div>
-<div id="notFoundInformation" th:if = "${information.booleanValue() == false}">
+<div id="notFoundInformation" th:if = "${user.getName() == 'null'}">
     <div>
         <h1>
             что-то не так
@@ -28,8 +28,12 @@
     </div>
 </div>
 
-<div id="FoundInformation" th:if = "${information.booleanValue() == true}">
+<div id="FoundInformation" th:if="${user.getName() != 'null'}">
     <div>
+        <p th:text = "${user.getName()}"></p>
+        <p th:text = "${user.getPassword()}"></p>
+        <p th:text = "${user.getEnabled()}"></p>
+        <p th:text = "${user.getRole()}"></p>
         <img id="chooseYourGroup-image" src="uploadFiles/upload.png">
     </div>
 </div>

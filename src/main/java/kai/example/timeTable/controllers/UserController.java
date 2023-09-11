@@ -1,5 +1,6 @@
 package kai.example.timeTable.controllers;
 
+import kai.example.timeTable.models.User;
 import kai.example.timeTable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,14 +38,16 @@ public class UserController {
     }
 
     @RequestMapping(value = "/user/change", method = RequestMethod.POST)
-    public String postChangeUser(Model model) {
-        model.addAttribute("information", true);
+    public String postChangeUser(@RequestParam("user") String username, Model model) {
+        model.addAttribute("user", userService.findUser(username));
         return "changeUser";
     }
 
     @GetMapping(value = "/user/change")
     public String getChangeUser(Model model) {
-        model.addAttribute("information", false);
+        User user = new User();
+        user.setName("null");
+        model.addAttribute("user", user);
         return "changeUser";
     }
 }
