@@ -28,14 +28,22 @@
     </div>
 </div>
 
-<div id="FoundInformation" th:if="${user.getName() != 'null'}">
-    <div>
-        <p th:text = "${user.getName()}"></p>
-        <p th:text = "${user.getPassword()}"></p>
-        <p th:text = "${user.getEnabled()}"></p>
-        <p th:text = "${user.getRole()}"></p>
-        <img id="chooseYourGroup-image" src="uploadFiles/upload.png">
-    </div>
+<div id="FoundInformation" th:if="${user.getName() != 'null'}" style="height: 600px">
+    <form action="/user/change/refresh" target="_blank" method="post" style="text-align: center">
+        <label for="username">логин</label>
+        <input type="text" th:placeholder="${user.getName()}" name="username" id="username"><br>
+
+        <label for="password">пароль</label>
+        <input type="text" th:placeholder="${user.getPassword()}" name="password" id="password"><br>
+
+        <label for="enabled">активен</label>
+        <input type="text" th:placeholder="${user.getEnabled()}" name="enabled" id="enabled"><br>
+
+        <label for="access">уровень доступа</label>
+        <input type="text" th:placeholder="${user.getRole()}" name="access" id="access"><br>
+
+        <button type="submit">изменить</button>
+    </form>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 

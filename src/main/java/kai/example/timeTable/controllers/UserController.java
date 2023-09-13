@@ -50,4 +50,14 @@ public class UserController {
         model.addAttribute("user", user);
         return "changeUser";
     }
+
+    @RequestMapping(value = "/user/change/refresh", method = RequestMethod.POST)
+    public String postChangeRefreshUser(@RequestParam("username") String username,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("enabled") Boolean enabled,
+                                        @RequestParam("access") String access,
+                                        Model model) {
+        model.addAttribute("users", userService.findUsers());
+        return "Users";
+    }
 }
