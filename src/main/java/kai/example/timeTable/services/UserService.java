@@ -2,10 +2,7 @@ package kai.example.timeTable.services;
 
 import kai.example.timeTable.JDBCTemplate.TemplateConnection;
 import kai.example.timeTable.models.User;
-import kai.example.timeTable.repositories.loginRepositores.authoritiesRepository;
-import kai.example.timeTable.repositories.loginRepositores.userRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +11,6 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class UserService {
-    @Autowired
-    private userRepository userRepository;
-    @Autowired
-    private authoritiesRepository authoritiesRepository;
 
     public List<User> findUsers() {
         TemplateConnection connection = new TemplateConnection();
@@ -55,5 +48,15 @@ public class UserService {
                     return user1;
                 });
         return user.get(0);
+    }
+
+    public void changeUser(User user, String oldName) {
+        TemplateConnection connection = new TemplateConnection();
+        JdbcTemplate jdbcTemplate = connection.createConnection();
+        String SQL = "update users set username = ?, password = ?, enabled = ? where username = ?";
+        jdbcTemplate.update(SQL, user.getName(), "{noop}" + user.getPassword(), user.getEnabled(), oldName);
+        SQL = "update authorities set authority = ? where username = ?";
+        String role = "ROLE_" + user.getRole().toUpperCase();
+        jdbcTemplate.update(SQL, role, user.getName());
     }
 }

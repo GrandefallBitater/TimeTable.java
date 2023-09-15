@@ -28,19 +28,21 @@
     </div>
 </div>
 
-<div id="FoundInformation" th:if="${user.getName() != 'null'}" style="height: 600px">
-    <form action="/user/change/refresh" target="_blank" method="post" style="text-align: center">
+<div id="FoundInformation" th:if="${user.getName() != 'null'}" style="height: 400px">
+    <form action="/user/change/refresh" method="post" style="text-align: center">
         <label for="username">логин</label>
-        <input type="text" th:placeholder="${user.getName()}" name="username" id="username"><br>
+        <input type="text" th:value="${user.getName()}" name="username" id="username"><br>
 
         <label for="password">пароль</label>
-        <input type="text" th:placeholder="${user.getPassword()}" name="password" id="password"><br>
+        <input type="text" th:value="${user.getPassword()}" name="password" id="password"><br>
 
         <label for="enabled">активен</label>
-        <input type="text" th:placeholder="${user.getEnabled()}" name="enabled" id="enabled"><br>
+        <input type="text" th:value="${user.getEnabled()}" name="enabled" id="enabled"><br>
 
         <label for="access">уровень доступа</label>
-        <input type="text" th:placeholder="${user.getRole()}" name="access" id="access"><br>
+        <input type="text" th:value="${user.getRole()}" name="access" id="access"><br>
+
+        <input type="text" th:value="${user.getName()}" name="oldName" style="visibility: hidden"><br>
 
         <button type="submit">изменить</button>
     </form>

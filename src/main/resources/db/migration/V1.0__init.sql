@@ -19,11 +19,10 @@ create table authorities(
     constraint authorities_ibfk_1
     foreign key(username)
     references users(username)
+    on update cascade
 );
 
 insert into authorities values
 ('rinat', 'ROLE_ADMIN'),
-('rinat', 'ROLE_USER'),
 ('ruslan', 'ROLE_ADMIN'),
-('ruslan', 'ROLE_USER'),
 ('user', 'ROLE_USER');

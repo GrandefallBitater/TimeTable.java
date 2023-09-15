@@ -56,7 +56,10 @@ public class UserController {
                                         @RequestParam("password") String password,
                                         @RequestParam("enabled") Boolean enabled,
                                         @RequestParam("access") String access,
+                                        @RequestParam("oldName") String oldName,
                                         Model model) {
+        User user = new User(username, password, enabled, access);
+        userService.changeUser(user, oldName);
         model.addAttribute("users", userService.findUsers());
         return "Users";
     }
