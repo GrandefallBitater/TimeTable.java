@@ -59,4 +59,13 @@ public class UserService {
         String role = "ROLE_" + user.getRole().toUpperCase();
         jdbcTemplate.update(SQL, role, user.getName());
     }
+
+    public void createUser(User user) {
+        TemplateConnection connection = new TemplateConnection();
+        JdbcTemplate jdbcTemplate = connection.createConnection();
+        String SQL = "insert into users(username, password, enabled) values(?,?,?)";
+        jdbcTemplate.update(SQL, user.getName(), "{noop}" + user.getPassword(), user.getEnabled());
+        SQL = "insert into authorities(username, authority) values(?,?)";
+        jdbcTemplate.update(SQL, user.getName(), "ROLE_" + user.getRole().toUpperCase());
+    }
 }

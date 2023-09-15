@@ -63,4 +63,16 @@ public class UserController {
         model.addAttribute("users", userService.findUsers());
         return "Users";
     }
+
+    @RequestMapping(value = "/user/create/refresh", method = RequestMethod.POST)
+    public String postCreateRefreshUser(@RequestParam("username") String username,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("enabled") Boolean enabled,
+                                        @RequestParam("access") String access,
+                                        Model model) {
+        User user = new User(username, password, enabled, access);
+        userService.createUser(user);
+        model.addAttribute("users", userService.findUsers());
+        return "Users";
+    }
 }
