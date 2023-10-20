@@ -68,4 +68,14 @@ public class UserService {
         SQL = "insert into authorities(username, authority) values(?,?)";
         jdbcTemplate.update(SQL, user.getName(), "ROLE_" + user.getRole().toUpperCase());
     }
+
+    public void removeUser(User user) {
+        TemplateConnection connection = new TemplateConnection();
+        JdbcTemplate jdbcTemplate = connection.createConnection();
+        String SQL = "delete from authorities where username = ?";
+        jdbcTemplate.update(SQL, user.getName());
+        SQL = "delete from users where username = ?";
+        jdbcTemplate.update(SQL, user.getName());
+    }
+
 }

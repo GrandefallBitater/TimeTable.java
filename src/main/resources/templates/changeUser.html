@@ -46,6 +46,13 @@
 
         <button type="submit">изменить</button>
     </form>
+
+    <form action="/user/change/remove" method="post" style="text-align: center">
+
+        <input type="text" th:value="${user.getName()}" name="oldName" style="visibility: hidden"><br>
+
+        <button type="submit">удалить</button>
+    </form>
 </div>
 <div th:replace="fragments/footer :: footer"></div>
 
