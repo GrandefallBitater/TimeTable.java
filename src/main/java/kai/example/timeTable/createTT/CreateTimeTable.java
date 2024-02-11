@@ -13,16 +13,13 @@ import java.util.List;
 import static kai.example.timeTable.enums.ClassTime.*;
 
 public class CreateTimeTable {
-    @Setter
+
     private final List<StudentGroup> groups = new ArrayList<>();
     private final List<ClassTime> classTimeList = new ArrayList<>(List.of(FIRST_CLASS, SECOND_CLASS, THIRD_CLASS,
             FOURTH_CLASS, FIFTH_CLASS, SIXTH_CLASS));
-    DoSomeList doSomeList = new DoSomeList();
-    @Setter
+    private final DoSomeList doSomeList = new DoSomeList();
     private final List<Subject> subjects = doSomeList.getSubjects();
-    @Setter
     private final List<Audience> audiences = doSomeList.getAudiences();
-    @Setter
     private final List<Teacher> teachers = doSomeList.getTeachers();
     private Week week;
 
