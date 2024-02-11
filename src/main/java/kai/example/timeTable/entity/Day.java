@@ -4,7 +4,6 @@ import kai.example.timeTable.enums.ClassTime;
 import kai.example.timeTable.enums.DayOfWeek;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,9 +43,9 @@ public class Day {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < times.size(); i++){
-            sb.append(times.get(i).getStartTime() + " " + subjects.get(i).getSubjectName() + "(" +
-                    subjects.get(i).getSubjectName() + ") " + teachers.get(i).getFullName() + " " +
-                    audiences.get(i).getNumberAudience() + " " + getGroups(times.get(i)));
+            sb.append(times.get(i).getStartTime()).append(" ").append(subjects.get(i).getSubjectName()).append("(")
+                    .append(subjects.get(i).getSubjectName()).append(") ").append(teachers.get(i).getFullName())
+                    .append(" ").append(audiences.get(i).getNumberAudience()).append(" ").append(getGroups(times.get(i)));
         }
         return sb.toString();
     }

@@ -2,9 +2,7 @@ package kai.example.timeTable.entity;
 
 import kai.example.timeTable.enums.Equipment;
 import kai.example.timeTable.enums.TypeSubject;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Objects;

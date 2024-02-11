@@ -1,6 +1,5 @@
 package kai.example.timeTable.entity;
 
-import kai.example.timeTable.enums.DayOfWeek;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
