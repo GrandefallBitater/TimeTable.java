@@ -20,9 +20,9 @@ public class FileUploadController {
     }
 
     @RequestMapping(value="/upload", method=RequestMethod.POST)
-    public @ResponseBody String handleFileUpload(@RequestParam("plan") MultipartFile plan,
-                                                 @RequestParam("audience") MultipartFile audience,
-                                                 @RequestParam("teachers") MultipartFile teachers){
+    public @ResponseBody String handleFileUpload(@RequestParam("planFile") MultipartFile plan,
+                                                 @RequestParam("audienceFile") MultipartFile audience,
+                                                 @RequestParam("teachersFile") MultipartFile teachers){
         return fileUploadService.prepareUploadFiles(plan, audience, teachers);
     }
     //TODO попробуй всё таки сделать здесь через один файл, очень муторно, когда принимается 3
