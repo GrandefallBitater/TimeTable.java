@@ -10,11 +10,13 @@ import java.util.Map;
 public class StudentGroup {
     private final int numberGroup;
     private final int countStudents;
+    private final int numberOfCourse;
     private final Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
 
-    public StudentGroup(int numberGroup, int countStudents) {
+    public StudentGroup(int numberGroup, int countStudents,int numberOfCourse) {
         this.numberGroup = numberGroup;
         this.countStudents = countStudents;
+        this.numberOfCourse = numberOfCourse;
         fillMap();
     }
 

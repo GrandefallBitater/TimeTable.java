@@ -32,6 +32,14 @@ public class Day {
         groups.put(time, new ArrayList<>());
         groups.get(time).add(group);
     }
+    public void addLecture(ClassTime time, Subject subject, Audience audience, Teacher teacher, List<StudentGroup> group) {
+        times.add(time);
+        subjects.add(subject);
+        audiences.add(audience);
+        teachers.add(teacher);
+        groups.put(time, new ArrayList<>());
+        groups.get(time).addAll(group);
+    }
     private String getGroups(ClassTime time) {
         StringBuilder sb = new StringBuilder();
        for(StudentGroup group : groups.get(time)) {

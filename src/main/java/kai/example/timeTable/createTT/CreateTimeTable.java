@@ -5,7 +5,6 @@ import kai.example.timeTable.enums.ClassTime;
 import kai.example.timeTable.enums.DayOfWeek;
 import kai.example.timeTable.enums.TypeSubject;
 import kai.example.timeTable.services.DoSomeList;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +29,15 @@ public class CreateTimeTable {
         for (DayOfWeek day : DayOfWeek.values()) {
             for (StudentGroup group : groups) {
                 for (ClassTime time : classTimeList) {
-                    if (isGroupAvailable(day, time, group)){
+                    if (isGroupAvailable(day, time, group)) {
                         continue;
                     }
                     for (Audience audience : audiences) {
-                        if (isGroupAvailable(day, time, group)){
+                        if (isGroupAvailable(day, time, group)) {
                             break;
                         }
                         for (Subject subject : subjects) {
-                            if (isGroupAvailable(day, time, group)){
+                            if (isGroupAvailable(day, time, group)) {
                                 break;
                             }
                             //Проверка не поставится ли лаба на последнюю возможную пару в день(шестую)
@@ -105,17 +104,31 @@ public class CreateTimeTable {
         if (day == null) {
             day = new Day(dayOfWeek);
         }
+        if (subject.getTypeSubject().equals(TypeSubject.LECTURE)) {
+            List<StudentGroup> groupsOfOneCourse = groups.stream()
+                    .filter(x -> x.getNumberOfCourse() == group.getNumberOfCourse()).toList();
+            setTimeTableBlockForLecture(day, time, subject, audience, teacher, groupsOfOneCourse);
+            return;
+        }
         setTimeTableBlock(day, time, subject, audience, teacher, group);
         if (subject.getTypeSubject().equals(TypeSubject.LABORATORY)) {
             ClassTime newTime = classTimeList.get(classTimeList.indexOf(time) + 1);
             setTimeTableBlock(day, newTime, subject, audience, teacher, group);
         }
     }
-    private void setTimeTableBlock(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group){
+
+    private void setTimeTableBlock(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group) {
         day.addSubject(time, subject, audience, teacher, group);
-        teacher.changeTimeTableMap(day.getDayOfWeek(),time);
-        audience.changeTimeTableMap(day.getDayOfWeek(),time);
-        group.changeTimeTableMap(day.getDayOfWeek(),time);
+        teacher.changeTimeTableMap(day.getDayOfWeek(), time);
+        audience.changeTimeTableMap(day.getDayOfWeek(), time);
+        group.changeTimeTableMap(day.getDayOfWeek(), time);
+        week.addDay(day);
+    }
+    private void setTimeTableBlockForLecture(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, List<StudentGroup> group) {
+        day.addLecture(time, subject, audience, teacher, group);
+        teacher.changeTimeTableMap(day.getDayOfWeek(), time);
+        audience.changeTimeTableMap(day.getDayOfWeek(), time);
+        group.forEach(x->x.changeTimeTableMap(day.getDayOfWeek(), time));
         week.addDay(day);
     }
 
