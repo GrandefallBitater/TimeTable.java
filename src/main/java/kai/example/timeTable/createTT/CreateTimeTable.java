@@ -5,6 +5,7 @@ import kai.example.timeTable.enums.ClassTime;
 import kai.example.timeTable.enums.DayOfWeek;
 import kai.example.timeTable.enums.TypeSubject;
 import kai.example.timeTable.services.DoSomeList;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -13,37 +14,48 @@ import java.util.List;
 import static kai.example.timeTable.enums.ClassTime.*;
 
 public class CreateTimeTable {
-
-    private final List<StudentGroup> groups = new ArrayList<>();
+    @Setter
+    private List<StudentGroup> groups = new ArrayList<>();
     private final List<ClassTime> classTimeList = new ArrayList<>(List.of(FIRST_CLASS, SECOND_CLASS, THIRD_CLASS,
             FOURTH_CLASS, FIFTH_CLASS, SIXTH_CLASS));
     private final DoSomeList doSomeList = new DoSomeList();
-    private final List<Subject> subjects = doSomeList.getSubjects();
-    private final List<Audience> audiences = doSomeList.getAudiences();
-    private final List<Teacher> teachers = doSomeList.getTeachers();
-    private Week week;
+    private List<Subject> subjects = doSomeList.getSubjects();
+    private List<Audience> audiences = doSomeList.getAudiences();
+    private List<Teacher> teachers = doSomeList.getTeachers();
+    @Getter
+    private Week week = new Week();
+
+    public CreateTimeTable(List<StudentGroup> groups, List<Subject> subjects, List<Audience> audiences, List<Teacher> teachers) {
+        this.groups = groups;
+        this.subjects = subjects;
+        this.audiences = audiences;
+        this.teachers = teachers;
+    }
 
 
-    //На вход подаются группы одного курса, также подаются преподаватели, которые ведут лекции, а также предметы по которым у данного курса лекции
+
     public void createTimeTable() {
         // Создание расписания на всю неделю
         for (DayOfWeek day : DayOfWeek.values()) {
             for (StudentGroup group : groups) {
                 for (ClassTime time : classTimeList) {
-                    if (isGroupAvailable(day, time, group)){
+                    if (!(isGroupAvailable(day, time, group))) {
                         continue;
                     }
                     for (Audience audience : audiences) {
-                        if (isGroupAvailable(day, time, group)){
+                        if (!(isGroupAvailable(day, time, group))) {
                             break;
                         }
                         for (Subject subject : subjects) {
-                            if (isGroupAvailable(day, time, group)){
+                            if(isSubjectAvailable(subject,group.getNumberGroup())){
+                                continue;
+                            }
+                            if (!(isGroupAvailable(day, time, group))) {
                                 break;
                             }
                             //Проверка не поставится ли лаба на последнюю возможную пару в день(шестую)
                             if (subject.getTypeSubject().equals(TypeSubject.LABORATORY) && time.equals(SIXTH_CLASS)) {
-                                return;
+                                continue;
                             }
                             //Проверка доступности Аудитории
                             if (isClassroomAvailable(day, time, subject, audience)) {
@@ -51,7 +63,6 @@ public class CreateTimeTable {
                                 for (Teacher teacher : teachers) {
                                     // Проверка доступности Учителя
                                     if (isTeacherAvailable(day, time, subject, teacher)) {
-
                                         // Проверка доступности Группы
                                         if (isGroupAvailable(day, time, group)) {
                                             // Добавление предмета в расписание
@@ -67,6 +78,10 @@ public class CreateTimeTable {
                 }
             }
         }
+    }
+    private boolean isSubjectAvailable(Subject subject, int group) {
+        // Проверка был ли поставлен предмет в неделе у данной группы
+        return subject.getReservedGroupMap().get(group);
     }
 
     private boolean isClassroomAvailable(DayOfWeek day, ClassTime time, Subject subject, Audience audience) {
@@ -93,17 +108,12 @@ public class CreateTimeTable {
 
     private void addSubjectToTimetable(DayOfWeek dayOfWeek, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group) {
         // Добавление предмета в расписание для указанного дня недели и времени
-        Day day = null;
-        int indexDay;
-        for (Day d : week.getDays()) {
-            if (d.getDayOfWeek().equals(dayOfWeek)) {
-                day = d;
-                indexDay = week.getDays().indexOf(d);
-                week.getDays().remove(indexDay);
-            }
-        }
-        if (day == null) {
-            day = new Day(dayOfWeek);
+        Day day = week.getDays().stream().filter(x->x.getDayOfWeek().equals(dayOfWeek)).toList().get(0);
+        if (subject.getTypeSubject().equals(TypeSubject.LECTURE)) {
+            List<StudentGroup> groupsOfOneCourse = groups.stream()
+                    .filter(x -> x.getNumberOfCourse() == group.getNumberOfCourse()).toList();
+            setTimeTableBlockForLecture(day, time, subject, audience, teacher, groupsOfOneCourse);
+            return;
         }
         setTimeTableBlock(day, time, subject, audience, teacher, group);
         if (subject.getTypeSubject().equals(TypeSubject.LABORATORY)) {
@@ -111,12 +121,20 @@ public class CreateTimeTable {
             setTimeTableBlock(day, newTime, subject, audience, teacher, group);
         }
     }
-    private void setTimeTableBlock(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group){
+
+    private void setTimeTableBlock(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group) {
+        subject.changeGroupMap(group);
         day.addSubject(time, subject, audience, teacher, group);
-        teacher.changeTimeTableMap(day.getDayOfWeek(),time);
-        audience.changeTimeTableMap(day.getDayOfWeek(),time);
-        group.changeTimeTableMap(day.getDayOfWeek(),time);
-        week.addDay(day);
+        teacher.changeTimeTableMap(day.getDayOfWeek(), time);
+        audience.changeTimeTableMap(day.getDayOfWeek(), time);
+        group.changeTimeTableMap(day.getDayOfWeek(), time);
+    }
+    private void setTimeTableBlockForLecture(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, List<StudentGroup> group) {
+        day.addLecture(time, subject, audience, teacher, group);
+        teacher.changeTimeTableMap(day.getDayOfWeek(), time);
+        audience.changeTimeTableMap(day.getDayOfWeek(), time);
+        group.forEach(x->x.changeTimeTableMap(day.getDayOfWeek(), time));
+        group.forEach(subject::changeGroupMap);
     }
 
 

@@ -4,7 +4,9 @@ import kai.example.timeTable.enums.Equipment;
 import kai.example.timeTable.enums.TypeSubject;
 import lombok.Getter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Getter
@@ -12,20 +14,40 @@ public class Subject {
     private final String subjectName;
     private final TypeSubject typeSubject;
     private final List<Equipment> equipments;
-    private final int countClass;
+    private final int countClassPerWeek;
+    private int countAllClass;
+    private Map<Integer,Boolean> reservedGroupMap = new HashMap<>();
 
     public Subject(String subjectName, TypeSubject typeSubject, int subjectHours, List<Equipment> equipments) {
         this.subjectName = subjectName;
         this.typeSubject = typeSubject;
-        this.countClass = getCountClass(subjectHours);
+        this.countClassPerWeek = getCountClass(subjectHours);
         this.equipments = equipments;
     }
-
     private int getCountClass(int hours){
-        if(typeSubject.equals(TypeSubject.LABORATORY)){
-            return hours / 3;
+        int countClass = (typeSubject.equals(TypeSubject.LABORATORY)) ? (hours / 3) :  (hours / 3) * 2;
+        if((countClass / 16) < 0){
+            countAllClass = countClass;
+            return 0;
         }
-        return (hours / 3) * 2;
+        return 1;
+    }
+    public void fillGroupMap(List<StudentGroup> studentGroup){
+        for (StudentGroup s: studentGroup){
+            reservedGroupMap.put(s.getNumberGroup(), false);
+        }
+    }
+    public void changeGroupMap(StudentGroup group){
+        reservedGroupMap.replace(group.getNumberGroup(),true);
+    }
+
+
+
+    @Override
+    public String toString() {
+        return (countClassPerWeek > 0) ? subjectName + " ("+typeSubject.getNameTag() +") " :
+                subjectName +"["+ countAllClass+"]"+ " ("+typeSubject.getNameTag() +") ";
+
     }
 
     @Override

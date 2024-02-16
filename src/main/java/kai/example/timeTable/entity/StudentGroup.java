@@ -8,14 +8,20 @@ import java.util.HashMap;
 import java.util.Map;
 @Getter
 public class StudentGroup {
-    private final int numberGroup;
-    private final int countStudents;
-    private final Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
+    private int numberGroup;
+    private int countStudents;
+    private int numberOfCourse;
+    private Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
 
-    public StudentGroup(int numberGroup, int countStudents) {
+    public StudentGroup(int numberGroup, int countStudents,int numberOfCourse) {
         this.numberGroup = numberGroup;
         this.countStudents = countStudents;
+        this.numberOfCourse = numberOfCourse;
         fillMap();
+    }
+
+    public StudentGroup(int numberGroup) {
+        this.numberGroup = numberGroup;
     }
 
     private void fillMap(){
@@ -28,5 +34,10 @@ public class StudentGroup {
     }
     public void changeTimeTableMap(DayOfWeek dayOfWeek, ClassTime time){
         timeTableMap.get(dayOfWeek).put(time,false);
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(numberGroup);
     }
 }
