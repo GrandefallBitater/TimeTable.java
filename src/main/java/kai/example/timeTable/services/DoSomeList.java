@@ -10,14 +10,17 @@ import lombok.Getter;
 import java.io.*;
 import java.util.*;
 
-@Getter
+
 public class DoSomeList {
     private final String urlAudience = "src/main/resources/files/audience.txt";
     private final String urlTeachers = "src/main/resources/files/teachers.txt";
     private final String urlSubjects = "src/main/resources/files/plan.txt";
     private final String splitBy = ",";
+    @Getter
     private List<Subject> subjects;
+    @Getter
     private List<Audience> audiences;
+    @Getter
     private List<Teacher> teachers;
 
     //Название,тип предмета(лекция// лекция, практическая работа),всегоЧасов, нужноеОборудование(его может быть много)
