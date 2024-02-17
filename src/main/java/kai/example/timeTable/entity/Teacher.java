@@ -42,6 +42,6 @@ public class Teacher {
 
     @Override
     public String toString() {
-        return getFullName();
+        return fullName;
     }
 }

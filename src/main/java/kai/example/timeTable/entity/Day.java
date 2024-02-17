@@ -14,48 +14,56 @@ import java.util.Map;
 @NoArgsConstructor
 @Getter
 public class Day {
+    private final Map<ClassTime, Map<Audience, Map<Teacher, Map<Subject, List<StudentGroup>>>>> gs = new HashMap<>();
     private DayOfWeek dayOfWeek;
-    private final List<ClassTime> times = new ArrayList<>();
-    private final List<Subject> subjects = new ArrayList<>();
-    private final List<Audience> audiences = new ArrayList<>();
-    private final List<Teacher> teachers = new ArrayList<>();
-    private final Map<ClassTime, List<StudentGroup>> groups = new HashMap<>();
-    private final Map<ClassTime, Map<Subject, StudentGroup>> groupS = new HashMap<>();
-    public Day(DayOfWeek dayOfWeek){
+
+    public Day(DayOfWeek dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
 
-    public void addSubject(ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group) {
-        times.add(time);
-        subjects.add(subject);
-        audiences.add(audience);
-        teachers.add(teacher);
-        groups.put(time, new ArrayList<>());
-        groups.get(time).add(group);
+    public void addSubject(ClassTime time, Audience audience, Teacher teacher, Subject subject, StudentGroup group) {
+        gs.computeIfAbsent(time, k -> new HashMap<>());
+        gs.get(time).put(audience, new HashMap<>());
+        gs.get(time).get(audience).put(teacher, new HashMap<>());
+        gs.get(time).get(audience).get(teacher).put(subject, new ArrayList<>(List.of(group)));
     }
-    public void addLecture(ClassTime time, Subject subject, Audience audience, Teacher teacher, List<StudentGroup> group) {
-        times.add(time);
-        subjects.add(subject);
-        audiences.add(audience);
-        teachers.add(teacher);
-        groups.put(time, new ArrayList<>());
-        groups.get(time).addAll(group);
+
+    public void addLecture(ClassTime time, Audience audience, Teacher teacher, Subject subject, List<StudentGroup> group) {
+        gs.computeIfAbsent(time, k -> new HashMap<>());
+        gs.get(time).put(audience, new HashMap<>());
+        gs.get(time).get(audience).put(teacher, new HashMap<>());
+        gs.get(time).get(audience).get(teacher).put(subject, group);
     }
-    private String getGroups(ClassTime time) {
+
+    private String getGroups(List<StudentGroup> groups) {
         StringBuilder sb = new StringBuilder();
-       for(StudentGroup group : groups.get(time)) {
-           sb.append(group.getNumberGroup()).append(", ");
-       }
-       return sb.toString();
+        if (groups.size() == 1) {
+            sb.append(groups.get(0));
+        } else {
+            for (StudentGroup group : groups) {
+                sb.append(group).append(", ");
+            }
+        }
+
+        return sb.toString();
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(dayOfWeek.getDayName()).append(": \n");
-        for(int i = 0; i < times.size(); i++){
-            sb.append("       ").append(times.get(i).getStartTime()).append(" ").append(subjects.get(i).getSubjectName()).append(" (")
-                    .append(subjects.get(i).getTypeSubject().getNameTag()).append(") ").append(teachers.get(i).getFullName())
-                    .append(" ").append(audiences.get(i).getNumberAudience()).append(" ").append(getGroups(times.get(i))).append("\n");
+        List<ClassTime> dayTimes = gs.keySet().stream().sorted(new ClassTime.ClassTimeComparator()).toList();
+        for (ClassTime time : dayTimes) {
+            for (Audience audience : gs.get(time).keySet()) {
+                for (Teacher teacher : gs.get(time).get(audience).keySet()) {
+                    for (Subject subject : gs.get(time).get(audience).get(teacher).keySet()) {
+                        sb.append("    ").append(time).append(" ").append(subject).append(" ")
+                                .append(teacher).append(" ").append(audience).append(" ")
+                                .append(getGroups(gs.get(time).get(audience).get(teacher).get(subject))).append("\n");
+                    }
+
+                }
+            }
         }
         return sb.toString();
     }

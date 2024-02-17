@@ -124,13 +124,13 @@ public class CreateTimeTable {
 
     private void setTimeTableBlock(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group) {
         subject.changeGroupMap(group);
-        day.addSubject(time, subject, audience, teacher, group);
+        day.addSubject(time, audience, teacher, subject, group);
         teacher.changeTimeTableMap(day.getDayOfWeek(), time);
         audience.changeTimeTableMap(day.getDayOfWeek(), time);
         group.changeTimeTableMap(day.getDayOfWeek(), time);
     }
     private void setTimeTableBlockForLecture(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, List<StudentGroup> group) {
-        day.addLecture(time, subject, audience, teacher, group);
+        day.addLecture(time, audience, teacher, subject, group);
         teacher.changeTimeTableMap(day.getDayOfWeek(), time);
         audience.changeTimeTableMap(day.getDayOfWeek(), time);
         group.forEach(x->x.changeTimeTableMap(day.getDayOfWeek(), time));
