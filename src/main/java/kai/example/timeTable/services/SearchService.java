@@ -13,12 +13,12 @@ public class SearchService {
     //условное обозначение поиска, как придумаем, как хранить расписание, изменим
     public List<TimeTable> search(String group) {
         List<TimeTable> listTimeTables = new ArrayList<>();
-        if (Objects.equals(group, "null")) {
+        if (Objects.equals(group, "")) {
             return listTimeTables;
         }
-        listTimeTables.add(new TimeTable("11:40", "1", 12));
-        listTimeTables.add(new TimeTable("12:50", "2", 12));
-        listTimeTables.add(new TimeTable("13:30", "3", 12));
+        listTimeTables.add(new TimeTable("Понедельник","11:40", "1", 12));
+        listTimeTables.add(new TimeTable("Вторник","12:50", "2", 12));
+        listTimeTables.add(new TimeTable("Среда","13:30", "3", 12));
         return listTimeTables;
     }
 }
