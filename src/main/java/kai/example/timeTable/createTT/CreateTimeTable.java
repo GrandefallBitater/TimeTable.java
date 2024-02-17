@@ -14,16 +14,16 @@ import java.util.List;
 import static kai.example.timeTable.enums.ClassTime.*;
 
 public class CreateTimeTable {
-    @Setter
-    private List<StudentGroup> groups = new ArrayList<>();
     private final List<ClassTime> classTimeList = new ArrayList<>(List.of(FIRST_CLASS, SECOND_CLASS, THIRD_CLASS,
             FOURTH_CLASS, FIFTH_CLASS, SIXTH_CLASS));
     private final DoSomeList doSomeList = new DoSomeList();
+    @Setter
+    private List<StudentGroup> groups = new ArrayList<>();
     private List<Subject> subjects = doSomeList.getSubjects();
     private List<Audience> audiences = doSomeList.getAudiences();
     private List<Teacher> teachers = doSomeList.getTeachers();
     @Getter
-    private Week week = new Week();
+    private final Week week = new Week();
 
     public CreateTimeTable(List<StudentGroup> groups, List<Subject> subjects, List<Audience> audiences, List<Teacher> teachers) {
         this.groups = groups;
@@ -31,7 +31,6 @@ public class CreateTimeTable {
         this.audiences = audiences;
         this.teachers = teachers;
     }
-
 
 
     public void createTimeTable() {
@@ -47,7 +46,7 @@ public class CreateTimeTable {
                             break;
                         }
                         for (Subject subject : subjects) {
-                            if(isSubjectAvailable(subject,group.getNumberGroup())){
+                            if (isSubjectAvailable(subject, group.getNumberGroup())) {
                                 continue;
                             }
                             if (!(isGroupAvailable(day, time, group))) {
@@ -58,7 +57,7 @@ public class CreateTimeTable {
                                 continue;
                             }
                             //Проверка доступности Аудитории
-                            if (isClassroomAvailable(day, time, subject, audience)) {
+                            if (isClassroomAvailable(day, time, subject, audience, group)) {
                                 //Условность: не может быть преподов, ведущих одинаковые предметы
                                 for (Teacher teacher : teachers) {
                                     // Проверка доступности Учителя
@@ -79,18 +78,33 @@ public class CreateTimeTable {
             }
         }
     }
+
     private boolean isSubjectAvailable(Subject subject, int group) {
         // Проверка был ли поставлен предмет в неделе у данной группы
         return subject.getReservedGroupMap().get(group);
     }
 
-    private boolean isClassroomAvailable(DayOfWeek day, ClassTime time, Subject subject, Audience audience) {
+    private boolean isClassroomAvailable(DayOfWeek day, ClassTime time, Subject subject, Audience audience, StudentGroup group) {
         // Проверка доступности аудитории для предмета для указанного дня недели и времени
         if (audience.getEquipments().containsAll(subject.getEquipments())) {
+            if (getCountPeople(group, subject) > audience.getCapacity()) {
+                return false;
+            }
             return audience.getTimeTableMap().get(day).get(time);
         }
         return false;
+    }
 
+    private int getCountPeople(StudentGroup group, Subject subject) {
+        int countPeople = 1;
+        if (subject.getTypeSubject().equals(TypeSubject.LECTURE)) {
+            for (StudentGroup gr : getGroupsOneCourse(group)) {
+                countPeople += gr.getCountStudents();
+            }
+        } else {
+            countPeople += group.getCountStudents();
+        }
+        return countPeople;
     }
 
     private boolean isTeacherAvailable(DayOfWeek day, ClassTime time, Subject subject, Teacher teacher) {
@@ -108,11 +122,9 @@ public class CreateTimeTable {
 
     private void addSubjectToTimetable(DayOfWeek dayOfWeek, ClassTime time, Subject subject, Audience audience, Teacher teacher, StudentGroup group) {
         // Добавление предмета в расписание для указанного дня недели и времени
-        Day day = week.getDays().stream().filter(x->x.getDayOfWeek().equals(dayOfWeek)).toList().get(0);
+        Day day = week.getDays().stream().filter(x -> x.getDayOfWeek().equals(dayOfWeek)).toList().get(0);
         if (subject.getTypeSubject().equals(TypeSubject.LECTURE)) {
-            List<StudentGroup> groupsOfOneCourse = groups.stream()
-                    .filter(x -> x.getNumberOfCourse() == group.getNumberOfCourse()).toList();
-            setTimeTableBlockForLecture(day, time, subject, audience, teacher, groupsOfOneCourse);
+            setTimeTableBlockForLecture(day, time, subject, audience, teacher, getGroupsOneCourse(group));
             return;
         }
         setTimeTableBlock(day, time, subject, audience, teacher, group);
@@ -129,12 +141,18 @@ public class CreateTimeTable {
         audience.changeTimeTableMap(day.getDayOfWeek(), time);
         group.changeTimeTableMap(day.getDayOfWeek(), time);
     }
+
     private void setTimeTableBlockForLecture(Day day, ClassTime time, Subject subject, Audience audience, Teacher teacher, List<StudentGroup> group) {
         day.addLecture(time, audience, teacher, subject, group);
         teacher.changeTimeTableMap(day.getDayOfWeek(), time);
         audience.changeTimeTableMap(day.getDayOfWeek(), time);
-        group.forEach(x->x.changeTimeTableMap(day.getDayOfWeek(), time));
+        group.forEach(x -> x.changeTimeTableMap(day.getDayOfWeek(), time));
         group.forEach(subject::changeGroupMap);
+    }
+
+    private List<StudentGroup> getGroupsOneCourse(StudentGroup group) {
+        return groups.stream().filter(x -> x.getNumberOfCourse() == group.getNumberOfCourse())
+                .toList();
     }
 
 
