@@ -13,11 +13,11 @@ import java.util.Map;
 @Getter
 public class Teacher {
     private final String fullName;
-    private Subject subject;
+    private List<Subject> subject;
     private List<TypeSubject> typeOfTeaching;
     private Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
 
-    public Teacher(String fullName, Subject subject, List<TypeSubject> typeOfTeaching) {
+    public Teacher(String fullName, List<Subject> subject, List<TypeSubject> typeOfTeaching) {
         this.fullName = fullName;
         this.subject = subject;
         this.typeOfTeaching = typeOfTeaching;

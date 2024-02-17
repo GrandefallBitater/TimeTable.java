@@ -1,37 +1,62 @@
 package kai.example.timeTable.services;
 
 import kai.example.timeTable.entity.Audience;
+import kai.example.timeTable.entity.StudentGroup;
 import kai.example.timeTable.entity.Subject;
 import kai.example.timeTable.entity.Teacher;
 import kai.example.timeTable.enums.Equipment;
 import kai.example.timeTable.enums.TypeSubject;
 import lombok.Getter;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class DoSomeList {
-    private final String urlAudience = "src/main/resources/files/audience.txt";
-    private final String urlTeachers = "src/main/resources/files/teachers.txt";
-    private final String urlSubjects = "src/main/resources/files/plan.txt";
+    private String urlAudience = "src/main/resources/files/audience.txt";
+    private String urlTeachers = "src/main/resources/files/teachers.txt";
+    private String urlSubjects = "src/main/resources/files/plan.txt";
+    private String urlGroups = "src/main/resources/files/groups.txt";
     private final String splitBy = ",";
     @Getter
-    private List<Subject> subjects;
+    private final List<Subject> subjects = new ArrayList<>();
     @Getter
-    private List<Audience> audiences;
+    private final List<Audience> audiences = new ArrayList<>();
     @Getter
-    private List<Teacher> teachers;
+    private final List<Teacher> teachers = new ArrayList<>();
+    @Getter
+    private final List<StudentGroup> groups = new ArrayList<>();
 
-    //Название,тип предмета(лекция// лекция, практическая работа),всегоЧасов, нужноеОборудование(его может быть много)
+    public DoSomeList() {
+    }
+
+    public DoSomeList(String urlAudience, String urlTeachers, String urlSubjects, String urlGroups) {
+        this.urlAudience = urlAudience;
+        this.urlTeachers = urlTeachers;
+        this.urlSubjects = urlSubjects;
+        this.urlGroups = urlGroups;
+    }
+
+    public void makeAllLists() {
+        getAudienceFromFile();
+        getSubjectsFromFile();
+        getTeachersFromFile();
+        getGroupsFromFile();
+    }
+
+    //Название,тип предмета(лекция// лекция, практическая работа),всегоЧасов, курс предмета, нужноеОборудование(его может быть много)
     //химия,леrция,30,компьютеры,доска
-    public void getSubjectsFromFile() {
+    private void getSubjectsFromFile() {
         String line = "";
         try (BufferedReader br = new BufferedReader(new FileReader(urlSubjects))) {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(splitBy);
-                subjects.add(new Subject(parts[0],getTypeSubject(parts[1]), Integer.parseInt(parts[2]),
-                        getEquipments(Arrays.copyOfRange(parts, 3, parts.length - 1))));
+                subjects.add(new Subject(parts[0], getTypeSubject(parts[1]), Integer.parseInt(parts[2]),
+                        Integer.parseInt(parts[3]), getEquipments(Arrays.copyOfRange(parts, 4, parts.length - 1))));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -39,18 +64,19 @@ public class DoSomeList {
     }
 
     // ФИО, Наименование предмета, тип преподаваемого предмета(лекция// лекция, практическая работа)
-    public void getTeachersFromFile() {
+    private void getTeachersFromFile() {
         String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(urlSubjects))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(urlTeachers))) {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(splitBy);
                 String FIO = parts[0];
-                Subject subject = getSubjForTeacher(parts[1]);
                 List<TypeSubject> typeOfTeaching = new ArrayList<>();
-                for(int i = 2; i < parts.length; i++) {
+                for (int i = 2; i < parts.length; i++) {
                     typeOfTeaching.add(getTypeSubject(parts[i]));
                 }
-                Teacher teacher = new Teacher(FIO,subject,typeOfTeaching);
+                List<Subject> subject = new ArrayList<>();
+                getSubjForTeacher(parts[1],typeOfTeaching);
+                Teacher teacher = new Teacher(FIO, subject, typeOfTeaching);
                 teachers.add(teacher);
             }
         } catch (IOException e) {
@@ -60,29 +86,42 @@ public class DoSomeList {
     }
 
     //Номер аудитории,вместимость,оборудование(его может быть много)
-    public void getAudienceFromFile() {
+    private void getAudienceFromFile() {
         String line;
-        try (BufferedReader br = new BufferedReader(new FileReader(urlSubjects))) {
+        try (BufferedReader br = new BufferedReader(new FileReader(urlAudience))) {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(splitBy);
-                audiences.add(new Audience(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),
+                audiences.add(new Audience(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
                         getEquipments(Arrays.copyOfRange(parts, 2, parts.length - 1))));
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
-    private TypeSubject getTypeSubject(String type){
-         return switch (type){
+
+    private void getGroupsFromFile() {
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(urlGroups))) {
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(splitBy);
+                groups.add(new StudentGroup(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]),
+                        Integer.parseInt(parts[2])));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private TypeSubject getTypeSubject(String type) {
+        return switch (type) {
             case "лекция" -> TypeSubject.LECTURE;
             case "практическая работа" -> TypeSubject.PRACTICE;
             case "лабораторная работа" -> TypeSubject.LABORATORY;
-             default -> throw new IllegalStateException("Unexpected value: " + type);
-         };
+            default -> throw new IllegalStateException("Unexpected value: " + type);
+        };
     }
 
-    private List<Equipment> getEquipments(String[] parts){
+    private List<Equipment> getEquipments(String[] parts) {
         List<Equipment> equipment = new ArrayList<>();
         for (String part : parts) {
             switch (part) {
@@ -93,12 +132,14 @@ public class DoSomeList {
         }
         return equipment;
     }
-    private Subject getSubjForTeacher(String subjectName) {
+
+    private List<Subject> getSubjForTeacher(String subjectName, List<TypeSubject> typeSubjects) {
+        List<Subject> subs = new ArrayList<>();
         for (Subject sub : subjects) {
-            if (sub.getSubjectName().equals(subjectName)) {
-                return sub;
+            if (sub.getSubjectName().equals(subjectName) && typeSubjects.contains(sub.getTypeSubject())) {
+                subs.add(sub);
             }
         }
-        return null;
+        return subs;
     }
 }

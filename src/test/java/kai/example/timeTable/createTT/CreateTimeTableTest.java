@@ -13,7 +13,6 @@ public class CreateTimeTableTest {
         createTimeTable.setGroups(lists.createGroups());
         createTimeTable.createTimeTable();
         createTimeTable.getWeek().getDays().forEach(System.out::println);
-
     }
 
 }

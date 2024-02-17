@@ -46,7 +46,7 @@ public class CreateTimeTable {
                             break;
                         }
                         for (Subject subject : subjects) {
-                            if (isSubjectAvailable(subject, group.getNumberGroup())) {
+                            if (isSubjectAvailable(subject, group)) {
                                 continue;
                             }
                             if (!(isGroupAvailable(day, time, group))) {
@@ -79,9 +79,12 @@ public class CreateTimeTable {
         }
     }
 
-    private boolean isSubjectAvailable(Subject subject, int group) {
-        // Проверка был ли поставлен предмет в неделе у данной группы
-        return subject.getReservedGroupMap().get(group);
+    private boolean isSubjectAvailable(Subject subject, StudentGroup group) {
+        if(subject.getCourseOfSubject() == group.getNumberOfCourse() ) {
+            // Проверка был ли поставлен предмет в неделе у данной группы
+            return subject.getReservedGroupMap().get(group.getNumberGroup());
+        }
+        return true;
     }
 
     private boolean isClassroomAvailable(DayOfWeek day, ClassTime time, Subject subject, Audience audience, StudentGroup group) {
@@ -109,7 +112,7 @@ public class CreateTimeTable {
 
     private boolean isTeacherAvailable(DayOfWeek day, ClassTime time, Subject subject, Teacher teacher) {
         // Проверка доступности учителя для указанного дня недели и времени
-        if (teacher.getSubject().equals(subject)) {
+        if (teacher.getSubject().contains(subject)) {
             return teacher.getTimeTableMap().get(day).get(time);
         }
         return false;

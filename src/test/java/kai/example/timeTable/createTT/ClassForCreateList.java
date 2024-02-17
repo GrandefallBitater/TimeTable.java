@@ -26,13 +26,13 @@ public class ClassForCreateList {
 
     List<Subject> createSubjects() {
         List<Subject> subjects = new ArrayList<>();
-        subjects.add(new Subject("ООП", TypeSubject.LECTURE, 50,
+        subjects.add(new Subject("ООП", TypeSubject.LECTURE, 50,4,
                 new ArrayList<>(List.of(Equipment.BOARD))));
-        subjects.add(new Subject("ООП", TypeSubject.LABORATORY, 50,
+        subjects.add(new Subject("ООП", TypeSubject.LABORATORY, 50,4,
                 new ArrayList<>(List.of(Equipment.BOARD, Equipment.COMPUTERS))));
-        subjects.add(new Subject("Матан", TypeSubject.LECTURE, 50,
+        subjects.add(new Subject("Матан", TypeSubject.LECTURE, 50,4,
                 new ArrayList<>(List.of(Equipment.PROJECTOR))));
-        subjects.add(new Subject("Матан", TypeSubject.LABORATORY, 50,
+        subjects.add(new Subject("Матан", TypeSubject.LABORATORY, 50,4,
                 new ArrayList<>(List.of(Equipment.BOARD))));
         subjects.forEach(x -> x.fillGroupMap(createGroups()));
         return subjects;
@@ -40,14 +40,18 @@ public class ClassForCreateList {
 
     List<Teacher> createTeachers() {
         List<Teacher> teachers = new ArrayList<>();
-        teachers.add(new Teacher("Сотыч", new Subject("ООП", TypeSubject.LECTURE, 50,
-                new ArrayList<>(List.of(Equipment.BOARD))), new ArrayList<>()));
-        teachers.add(new Teacher("Анисимова", new Subject("Матан", TypeSubject.LECTURE, 50,
-                new ArrayList<>(List.of(Equipment.PROJECTOR))), new ArrayList<>()));
-        teachers.add(new Teacher("Сотыч", new Subject("ООП", TypeSubject.LABORATORY, 50,
-                new ArrayList<>(List.of(Equipment.BOARD, Equipment.COMPUTERS))), new ArrayList<>()));
-        teachers.add(new Teacher("Анисимова", new Subject("Матан", TypeSubject.LABORATORY, 50,
-                new ArrayList<>(List.of(Equipment.BOARD))), new ArrayList<>()));
+        List<Subject> sotnya = new ArrayList<>();
+        List<Subject> anisimova = new ArrayList<>();
+        sotnya.add(new Subject("ООП", TypeSubject.LABORATORY, 50,4,
+                new ArrayList<>(List.of(Equipment.BOARD, Equipment.COMPUTERS))));
+        sotnya.add(new Subject("ООП", TypeSubject.LECTURE, 50,4,
+                new ArrayList<>(List.of(Equipment.BOARD))));
+        anisimova.add(new Subject("Матан", TypeSubject.LECTURE, 50,4,
+                new ArrayList<>(List.of(Equipment.PROJECTOR))));
+        anisimova.add(new Subject("Матан", TypeSubject.LABORATORY, 50,4,
+                new ArrayList<>(List.of(Equipment.BOARD))));
+        teachers.add(new Teacher("Сотыч",sotnya, new ArrayList<>()));
+        teachers.add(new Teacher("Анисимова", anisimova, new ArrayList<>()));
         return teachers;
     }
 

@@ -16,13 +16,15 @@ public class Subject {
     private final List<Equipment> equipments;
     private final int countClassPerWeek;
     private int countAllClass;
+    private int courseOfSubject;
     private Map<Integer,Boolean> reservedGroupMap = new HashMap<>();
 
-    public Subject(String subjectName, TypeSubject typeSubject, int subjectHours, List<Equipment> equipments) {
+    public Subject(String subjectName, TypeSubject typeSubject, int subjectHours, int courseOfSubject, List<Equipment> equipments) {
         this.subjectName = subjectName;
         this.typeSubject = typeSubject;
-        this.countClassPerWeek = getCountClass(subjectHours);
         this.equipments = equipments;
+        this.countClassPerWeek = getCountClass(subjectHours);
+        this.courseOfSubject = courseOfSubject;
     }
     private int getCountClass(int hours){
         int countClass = (typeSubject.equals(TypeSubject.LABORATORY)) ? (hours / 3) :  (hours / 3) * 2;

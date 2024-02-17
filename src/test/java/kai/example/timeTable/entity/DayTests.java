@@ -16,7 +16,7 @@ public class DayTests {
     void toStringTest() {
         Day day = new Day(DayOfWeek.TUESDAY);
         day.addSubject(ClassTime.FIRST_CLASS, new Audience(337), new Teacher("Сотников"),
-                new Subject("ООП", TypeSubject.LABORATORY,30, new ArrayList<>()),
+                new Subject("ООП", TypeSubject.LABORATORY,30,4, new ArrayList<>()),
                 new StudentGroup(4210));
         System.out.println(day);
     }
