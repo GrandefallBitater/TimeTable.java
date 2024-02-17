@@ -170,6 +170,103 @@ CREATE TABLE main."AudienceEquipment"
         NOT VALID
 );
 
+CREATE TABLE main."Day"
+(
+    id serial NOT NULL,
+    "dayOfWeek" smallint NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT "dayOfWeekUniq" UNIQUE ("dayOfWeek"),
+    CONSTRAINT "dayOfWeekFK" FOREIGN KEY ("dayOfWeek")
+        REFERENCES main."dayOfWeek" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID
+);
+
+CREATE TABLE main."ClassTime"
+(
+    id serial NOT NULL,
+    "time" text NOT NULL,
+    PRIMARY KEY (id),
+    CONSTRAINT "TimeUnique" UNIQUE ("time")
+);
+
+insert into main."ClassTime" ("time") values ('8:00');
+insert into main."ClassTime" ("time") values ('9:40');
+insert into main."ClassTime" ("time") values ('11:20');
+insert into main."ClassTime" ("time") values ('13:30');
+insert into main."ClassTime" ("time") values ('15:10');
+insert into main."ClassTime" ("time") values ('16:40');
+
+
+CREATE TABLE main."DayClassTime"
+(
+    "Dayid" smallint NOT NULL,
+    "ClassTimeid" smallint NOT NULL,
+    PRIMARY KEY ("Dayid", "ClassTimeid"),
+    CONSTRAINT "DayidFk" FOREIGN KEY ("Dayid")
+        REFERENCES main."Day" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "ClassTimeidFK" FOREIGN KEY ("ClassTimeid")
+        REFERENCES main."ClassTime" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID
+);
+
+CREATE TABLE main."DaySubject"
+(
+    "Dayid" smallint NOT NULL,
+    "Subjectid" smallint NOT NULL,
+    PRIMARY KEY ("Dayid", "Subjectid"),
+    CONSTRAINT "DaySidFK" FOREIGN KEY ("Dayid")
+        REFERENCES main."Day" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "SubjectDidFK" FOREIGN KEY ("Subjectid")
+        REFERENCES main."Subject" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID
+);
+
+CREATE TABLE main."DayAudience"
+(
+    "Dayid" smallint NOT NULL,
+    "Audienceid" smallint NOT NULL,
+    PRIMARY KEY ("Dayid", "Audienceid"),
+    CONSTRAINT "DayAidFK" FOREIGN KEY ("Dayid")
+        REFERENCES main."Day" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "AudienceDidFK" FOREIGN KEY ("Audienceid")
+        REFERENCES main."Audience" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID
+);
+
+CREATE TABLE main."DayTeacher"
+(
+    "Dayid" smallint NOT NULL,
+    "Teacherid" smallint NOT NULL,
+    PRIMARY KEY ("Dayid", "Teacherid"),
+    CONSTRAINT "DayTidFK" FOREIGN KEY ("Dayid")
+        REFERENCES main."Day" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "TeacherDidFK" FOREIGN KEY ("Teacherid")
+        REFERENCES main."Teacher" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID
+);
+
 
 
 
