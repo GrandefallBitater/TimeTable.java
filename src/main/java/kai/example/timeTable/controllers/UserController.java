@@ -75,4 +75,14 @@ public class UserController {
         model.addAttribute("users", userService.findUsers());
         return "Users";
     }
+
+    @RequestMapping(value = "/user/change/remove", method = RequestMethod.POST)
+    public String postChangeRemoveUser(@RequestParam("oldName") String username,
+                                        Model model) {
+        User user = new User();
+        user.setName(username);
+        userService.removeUser(user);
+        model.addAttribute("users", userService.findUsers());
+        return "Users";
+    }
 }

@@ -3,7 +3,6 @@ package kai.example.timeTable.services;
 import kai.example.timeTable.stubs.TimeTable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
