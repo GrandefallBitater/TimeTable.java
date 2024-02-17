@@ -15,9 +15,9 @@ public class Subject {
     private final TypeSubject typeSubject;
     private final List<Equipment> equipments;
     private final int countClassPerWeek;
+    private final int courseOfSubject;
+    private final Map<Integer, Boolean> reservedGroupMap = new HashMap<>();
     private int countAllClass;
-    private int courseOfSubject;
-    private Map<Integer,Boolean> reservedGroupMap = new HashMap<>();
 
     public Subject(String subjectName, TypeSubject typeSubject, int subjectHours, int courseOfSubject, List<Equipment> equipments) {
         this.subjectName = subjectName;
@@ -26,29 +26,31 @@ public class Subject {
         this.countClassPerWeek = getCountClass(subjectHours);
         this.courseOfSubject = courseOfSubject;
     }
-    private int getCountClass(int hours){
-        int countClass = (typeSubject.equals(TypeSubject.LABORATORY)) ? (hours / 3) :  (hours / 3) * 2;
-        if((countClass / 16) < 0){
+
+    private int getCountClass(int hours) {
+        int countClass = (typeSubject.equals(TypeSubject.LABORATORY)) ? (hours / 3) : (hours / 3) * 2;
+        if ((countClass / 16) < 0) {
             countAllClass = countClass;
             return 0;
         }
         return 1;
     }
-    public void fillGroupMap(List<StudentGroup> studentGroup){
-        for (StudentGroup s: studentGroup){
+
+    public void fillGroupMap(List<StudentGroup> studentGroup) {
+        for (StudentGroup s : studentGroup) {
             reservedGroupMap.put(s.getNumberGroup(), false);
         }
     }
-    public void changeGroupMap(StudentGroup group){
-        reservedGroupMap.replace(group.getNumberGroup(),true);
-    }
 
+    public void changeGroupMap(StudentGroup group) {
+        reservedGroupMap.replace(group.getNumberGroup(), true);
+    }
 
 
     @Override
     public String toString() {
-        return (countClassPerWeek > 0) ? subjectName + " ("+typeSubject.getNameTag() +") " :
-                subjectName +"["+ countAllClass+"]"+ " ("+typeSubject.getNameTag() +") ";
+        return (countClassPerWeek > 0) ? subjectName + " (" + typeSubject.getNameTag() + ") " :
+                subjectName + "[" + countAllClass + "]" + " (" + typeSubject.getNameTag() + ") ";
 
     }
 

@@ -13,7 +13,4 @@ public class Week {
     @Getter
     private final List<Day> days = new ArrayList<>(List.of(new Day(MONDAY), new Day(TUESDAY), new Day(WEDNESDAY),
             new Day(THURSDAY), new Day(FRIDAY), new Day(SATURDAY)));
-    public void addDay(Day day) {
-        days.add(day);
-    }
 }

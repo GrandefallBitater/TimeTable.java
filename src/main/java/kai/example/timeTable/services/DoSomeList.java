@@ -17,10 +17,6 @@ import java.util.List;
 
 
 public class DoSomeList {
-    private String urlAudience = "src/main/resources/files/audience.txt";
-    private String urlTeachers = "src/main/resources/files/teachers.txt";
-    private String urlSubjects = "src/main/resources/files/plan.txt";
-    private String urlGroups = "src/main/resources/files/groups.txt";
     private final String splitBy = ",";
     @Getter
     private final List<Subject> subjects = new ArrayList<>();
@@ -30,6 +26,10 @@ public class DoSomeList {
     private final List<Teacher> teachers = new ArrayList<>();
     @Getter
     private final List<StudentGroup> groups = new ArrayList<>();
+    private String urlAudience = "src/main/resources/files/audience.txt";
+    private String urlTeachers = "src/main/resources/files/teachers.txt";
+    private String urlSubjects = "src/main/resources/files/plan.txt";
+    private String urlGroups = "src/main/resources/files/groups.txt";
 
     public DoSomeList() {
     }
@@ -51,7 +51,7 @@ public class DoSomeList {
     //Название,тип предмета(лекция// лекция, практическая работа),всегоЧасов, курс предмета, нужноеОборудование(его может быть много)
     //химия,леrция,30,компьютеры,доска
     private void getSubjectsFromFile() {
-        String line = "";
+        String line;
         try (BufferedReader br = new BufferedReader(new FileReader(urlSubjects))) {
             while ((line = br.readLine()) != null) {
                 String[] parts = line.split(splitBy);
@@ -74,8 +74,7 @@ public class DoSomeList {
                 for (int i = 2; i < parts.length; i++) {
                     typeOfTeaching.add(getTypeSubject(parts[i]));
                 }
-                List<Subject> subject = new ArrayList<>();
-                getSubjForTeacher(parts[1],typeOfTeaching);
+                List<Subject> subject = getSubjForTeacher(parts[1], typeOfTeaching);
                 Teacher teacher = new Teacher(FIO, subject, typeOfTeaching);
                 teachers.add(teacher);
             }

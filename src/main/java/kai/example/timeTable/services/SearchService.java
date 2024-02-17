@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SearchService {
@@ -12,7 +13,7 @@ public class SearchService {
     //условное обозначение поиска, как придумаем, как хранить расписание, изменим
     public List<TimeTable> search(String group) {
         List<TimeTable> listTimeTables = new ArrayList<>();
-        if(group == "null"){
+        if (Objects.equals(group, "null")) {
             return listTimeTables;
         }
         listTimeTables.add(new TimeTable("11:40", "1", 12));

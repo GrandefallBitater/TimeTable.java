@@ -12,17 +12,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class FileUploadController {
-    private FileUploadService fileUploadService;
+    private final FileUploadService fileUploadService;
 
     @Autowired
-    public FileUploadController(FileUploadService fileUploadService){
+    public FileUploadController(FileUploadService fileUploadService) {
         this.fileUploadService = fileUploadService;
     }
 
-    @RequestMapping(value="/upload", method=RequestMethod.POST)
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public @ResponseBody String handleFileUpload(@RequestParam("planFile") MultipartFile plan,
                                                  @RequestParam("audienceFile") MultipartFile audience,
-                                                 @RequestParam("teachersFile") MultipartFile teachers){
+                                                 @RequestParam("teachersFile") MultipartFile teachers) {
         return fileUploadService.prepareUploadFiles(plan, audience, teachers);
     }
     //TODO попробуй всё таки сделать здесь через один файл, очень муторно, когда принимается 3

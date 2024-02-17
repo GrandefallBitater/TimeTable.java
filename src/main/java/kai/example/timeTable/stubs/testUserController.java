@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class testUserController {
-    private userRepository userRepository;
-    private authoritiesRepository authoritiesRepository;
+    private final userRepository userRepository;
+    private final authoritiesRepository authoritiesRepository;
 
     @Autowired
     public testUserController(userRepository userRepository, authoritiesRepository authoritiesRepository) {

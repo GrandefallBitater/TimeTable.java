@@ -4,11 +4,11 @@ import kai.example.timeTable.entity.*;
 import kai.example.timeTable.enums.ClassTime;
 import kai.example.timeTable.enums.DayOfWeek;
 import kai.example.timeTable.enums.TypeSubject;
-import kai.example.timeTable.services.DoSomeList;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static kai.example.timeTable.enums.ClassTime.*;
@@ -16,14 +16,13 @@ import static kai.example.timeTable.enums.ClassTime.*;
 public class CreateTimeTable {
     private final List<ClassTime> classTimeList = new ArrayList<>(List.of(FIRST_CLASS, SECOND_CLASS, THIRD_CLASS,
             FOURTH_CLASS, FIFTH_CLASS, SIXTH_CLASS));
-    private final DoSomeList doSomeList = new DoSomeList();
-    @Setter
-    private List<StudentGroup> groups = new ArrayList<>();
-    private List<Subject> subjects = doSomeList.getSubjects();
-    private List<Audience> audiences = doSomeList.getAudiences();
-    private List<Teacher> teachers = doSomeList.getTeachers();
+    private final List<Subject> subjects;
+    private final List<Audience> audiences;
+    private final List<Teacher> teachers;
     @Getter
     private final Week week = new Week();
+    @Setter
+    private List<StudentGroup> groups;
 
     public CreateTimeTable(List<StudentGroup> groups, List<Subject> subjects, List<Audience> audiences, List<Teacher> teachers) {
         this.groups = groups;
@@ -80,7 +79,7 @@ public class CreateTimeTable {
     }
 
     private boolean isSubjectAvailable(Subject subject, StudentGroup group) {
-        if(subject.getCourseOfSubject() == group.getNumberOfCourse() ) {
+        if (subject.getCourseOfSubject() == group.getNumberOfCourse()) {
             // Проверка был ли поставлен предмет в неделе у данной группы
             return subject.getReservedGroupMap().get(group.getNumberGroup());
         }
@@ -89,7 +88,7 @@ public class CreateTimeTable {
 
     private boolean isClassroomAvailable(DayOfWeek day, ClassTime time, Subject subject, Audience audience, StudentGroup group) {
         // Проверка доступности аудитории для предмета для указанного дня недели и времени
-        if (audience.getEquipments().containsAll(subject.getEquipments())) {
+        if (new HashSet<>(audience.getEquipments()).containsAll(subject.getEquipments())) {
             if (getCountPeople(group, subject) > audience.getCapacity()) {
                 return false;
             }

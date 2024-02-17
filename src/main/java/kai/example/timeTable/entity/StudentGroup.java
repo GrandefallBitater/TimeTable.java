@@ -6,14 +6,15 @@ import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.Map;
+
 @Getter
 public class StudentGroup {
-    private int numberGroup;
+    private final int numberGroup;
+    private final Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
     private int countStudents;
     private int numberOfCourse;
-    private Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
 
-    public StudentGroup(int numberGroup, int countStudents,int numberOfCourse) {
+    public StudentGroup(int numberGroup, int countStudents, int numberOfCourse) {
         this.numberGroup = numberGroup;
         this.countStudents = countStudents;
         this.numberOfCourse = numberOfCourse;
@@ -24,16 +25,17 @@ public class StudentGroup {
         this.numberGroup = numberGroup;
     }
 
-    private void fillMap(){
-        for(DayOfWeek day: DayOfWeek.values()){
-            timeTableMap.put(day,new HashMap<>());
-            for(ClassTime time: ClassTime.values()){
-                timeTableMap.get(day).put(time,true);
+    private void fillMap() {
+        for (DayOfWeek day : DayOfWeek.values()) {
+            timeTableMap.put(day, new HashMap<>());
+            for (ClassTime time : ClassTime.values()) {
+                timeTableMap.get(day).put(time, true);
             }
         }
     }
-    public void changeTimeTableMap(DayOfWeek dayOfWeek, ClassTime time){
-        timeTableMap.get(dayOfWeek).put(time,false);
+
+    public void changeTimeTableMap(DayOfWeek dayOfWeek, ClassTime time) {
+        timeTableMap.get(dayOfWeek).put(time, false);
     }
 
     @Override

@@ -3,10 +3,8 @@ package kai.example.timeTable.JDBCTemplate;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import javax.sql.DataSource;
-
 public class TemplateConnection {
-    private DriverManagerDataSource dataSource;
+    private final DriverManagerDataSource dataSource;
 
     public TemplateConnection() {
         this.dataSource = new DriverManagerDataSource();
