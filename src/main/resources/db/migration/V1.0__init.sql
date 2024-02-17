@@ -170,19 +170,6 @@ CREATE TABLE main."AudienceEquipment"
         NOT VALID
 );
 
-CREATE TABLE main."Day"
-(
-    id serial NOT NULL,
-    "dayOfWeek" smallint NOT NULL,
-    PRIMARY KEY (id),
-    CONSTRAINT "dayOfWeekUniq" UNIQUE ("dayOfWeek"),
-    CONSTRAINT "dayOfWeekFK" FOREIGN KEY ("dayOfWeek")
-        REFERENCES main."dayOfWeek" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-        NOT VALID
-);
-
 CREATE TABLE main."ClassTime"
 (
     id serial NOT NULL,
@@ -198,74 +185,70 @@ insert into main."ClassTime" ("time") values ('13:30');
 insert into main."ClassTime" ("time") values ('15:10');
 insert into main."ClassTime" ("time") values ('16:40');
 
-
-CREATE TABLE main."DayClassTime"
+CREATE TABLE main."TimeTable"
 (
-    "Dayid" smallint NOT NULL,
-    "ClassTimeid" smallint NOT NULL,
-    PRIMARY KEY ("Dayid", "ClassTimeid"),
-    CONSTRAINT "DayidFk" FOREIGN KEY ("Dayid")
-        REFERENCES main."Day" (id) MATCH SIMPLE
+    day smallint NOT NULL,
+    "Subject" smallint NOT NULL,
+    "Group" smallint NOT NULL,
+    "ClassTime" smallint NOT NULL,
+    "Teacher" smallint NOT NULL,
+    "Audience" smallint NOT NULL,
+    "SubjectType" smallint NOT NULL,
+    PRIMARY KEY (day, "SubjectType", "Group", "ClassTime"),
+    CONSTRAINT "SubjectFK" FOREIGN KEY ("SubjectType")
+        REFERENCES main."Subject" (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
         NOT VALID,
-    CONSTRAINT "ClassTimeidFK" FOREIGN KEY ("ClassTimeid")
+    CONSTRAINT "ClassTimeFK" FOREIGN KEY ("ClassTime")
         REFERENCES main."ClassTime" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "GroupFK" FOREIGN KEY ("Group")
+        REFERENCES main."Group" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "DayFK" FOREIGN KEY (day)
+        REFERENCES main."dayOfWeek" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "SuTypeFK" FOREIGN KEY ("SubjectType")
+        REFERENCES main."typeSubject" (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
         NOT VALID
 );
 
-CREATE TABLE main."DaySubject"
+ALTER TABLE IF EXISTS main."Teacher" DROP COLUMN IF EXISTS subjectid;
+ALTER TABLE IF EXISTS main."Teacher" DROP CONSTRAINT IF EXISTS "subjectTeacherFK";
+
+CREATE TABLE main."TeacherSubject"
 (
-    "Dayid" smallint NOT NULL,
+    "Teacherid" smallint NOT NULL,
     "Subjectid" smallint NOT NULL,
-    PRIMARY KEY ("Dayid", "Subjectid"),
-    CONSTRAINT "DaySidFK" FOREIGN KEY ("Dayid")
-        REFERENCES main."Day" (id) MATCH SIMPLE
+    PRIMARY KEY ("Teacherid", "Subjectid"),
+    CONSTRAINT "TeacheridFK" FOREIGN KEY ("Teacherid")
+        REFERENCES main."Teacher" (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
         NOT VALID,
-    CONSTRAINT "SubjectDidFK" FOREIGN KEY ("Subjectid")
+    CONSTRAINT "SubjectidFK" FOREIGN KEY ("Subjectid")
         REFERENCES main."Subject" (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
         NOT VALID
 );
 
-CREATE TABLE main."DayAudience"
-(
-    "Dayid" smallint NOT NULL,
-    "Audienceid" smallint NOT NULL,
-    PRIMARY KEY ("Dayid", "Audienceid"),
-    CONSTRAINT "DayAidFK" FOREIGN KEY ("Dayid")
-        REFERENCES main."Day" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-        NOT VALID,
-    CONSTRAINT "AudienceDidFK" FOREIGN KEY ("Audienceid")
-        REFERENCES main."Audience" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-        NOT VALID
-);
+ALTER TABLE IF EXISTS main."Subject"
+    ADD COLUMN "courseOfSubject" smallint NOT NULL;
 
-CREATE TABLE main."DayTeacher"
-(
-    "Dayid" smallint NOT NULL,
-    "Teacherid" smallint NOT NULL,
-    PRIMARY KEY ("Dayid", "Teacherid"),
-    CONSTRAINT "DayTidFK" FOREIGN KEY ("Dayid")
-        REFERENCES main."Day" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-        NOT VALID,
-    CONSTRAINT "TeacherDidFK" FOREIGN KEY ("Teacherid")
-        REFERENCES main."Teacher" (id) MATCH SIMPLE
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-        NOT VALID
-);
+ALTER TABLE IF EXISTS main."Subject"
+    ADD COLUMN "countAllClass" smallint NOT NULL;
+
+
 
 
 
