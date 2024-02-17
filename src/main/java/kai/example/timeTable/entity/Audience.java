@@ -11,10 +11,11 @@ import java.util.Map;
 
 @Getter
 public class Audience {
-    private int numberAudience;
+    private final int numberAudience;
+    private final Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
     private int capacity;
     private List<Equipment> equipments;
-    private  Map<DayOfWeek, Map<ClassTime, Boolean>> timeTableMap = new HashMap<>();
+
     public Audience(int numberAudience, int capacity, List<Equipment> equipments) {
         this.numberAudience = numberAudience;
         this.capacity = capacity;
@@ -26,16 +27,17 @@ public class Audience {
         this.numberAudience = numberAudience;
     }
 
-    private void fillMap(){
-        for(DayOfWeek day: DayOfWeek.values()){
-            timeTableMap.put(day,new HashMap<>());
-            for(ClassTime time: ClassTime.values()){
-                timeTableMap.get(day).put(time,true);
+    private void fillMap() {
+        for (DayOfWeek day : DayOfWeek.values()) {
+            timeTableMap.put(day, new HashMap<>());
+            for (ClassTime time : ClassTime.values()) {
+                timeTableMap.get(day).put(time, true);
             }
         }
     }
-    public void changeTimeTableMap(DayOfWeek dayOfWeek, ClassTime time){
-        timeTableMap.get(dayOfWeek).put(time,false);
+
+    public void changeTimeTableMap(DayOfWeek dayOfWeek, ClassTime time) {
+        timeTableMap.get(dayOfWeek).put(time, false);
     }
 
     @Override

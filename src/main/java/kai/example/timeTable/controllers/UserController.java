@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-    private UserService userService;
+    private final UserService userService;
 
     @Autowired
     public UserController(UserService userService) {
@@ -78,7 +78,7 @@ public class UserController {
 
     @RequestMapping(value = "/user/change/remove", method = RequestMethod.POST)
     public String postChangeRemoveUser(@RequestParam("oldName") String username,
-                                        Model model) {
+                                       Model model) {
         User user = new User();
         user.setName(username);
         userService.removeUser(user);

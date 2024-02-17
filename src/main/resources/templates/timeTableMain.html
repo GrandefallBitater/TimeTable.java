@@ -28,7 +28,7 @@
     </div>
     <div id="foundedTimeTable">
         <div th:each = "timeTable : ${timeTables}" id="timeTableDay">
-            <h1>Понедельник</h1>
+            <h1 th:text="${timeTable.getDayOfWeek()}"></h1>
             <table>
                 <tr>
                     <th>название</th>

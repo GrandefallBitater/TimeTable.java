@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class CreateTimeTableController {
-    private createTimeTableService createTimeTableService;
+    private final createTimeTableService createTimeTableService;
 
     @Autowired
     public CreateTimeTableController(createTimeTableService createTimeTableService) {
