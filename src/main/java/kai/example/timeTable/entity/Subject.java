@@ -28,9 +28,8 @@ public class Subject {
     }
 
     private int getCountClass(int hours) {
-        int countClass = (typeSubject.equals(TypeSubject.LABORATORY)) ? (hours / 3) : (hours / 3) * 2;
-        if ((countClass / 16) < 0) {
-            countAllClass = countClass;
+        this.countAllClass = (typeSubject.equals(TypeSubject.LABORATORY)) ? (hours / 3) : (hours / 3) * 2;
+        if ((countAllClass / 16) < 0) {
             return 0;
         }
         return 1;

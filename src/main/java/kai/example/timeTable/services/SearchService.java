@@ -7,9 +7,6 @@ import kai.example.timeTable.models.Session;
 import kai.example.timeTable.models.TimeTable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Objects;
 
 @Service
@@ -30,7 +27,7 @@ public class SearchService {
     public TimeTable search(String group) {
         TimeTable timeTable = new TimeTable();
         Session session = new Session(ClassTime.FIRST_CLASS.toString(), "sotich", 4410,
-                331, "SAOD", TypeSubject.LECTURE.getNameTag());
+                331, "SAOD", TypeSubject.LECTURE.toString());
         if (Objects.equals(group, "")) {
             return null;
         }

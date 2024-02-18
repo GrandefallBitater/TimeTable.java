@@ -4,9 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
+@Getter
 public enum TypeSubject {
-    LECTURE("Лекция"), LABORATORY("Лабораторная работа"),
-    PRACTICE("Практическая работа");
-    @Getter
+    LECTURE(1,"Лекция"), LABORATORY(2,"Лабораторная работа"),
+    PRACTICE(3,"Практическая работа");
+
+    private final int id;
     private final String nameTag;
+
+    @Override
+    public String toString() {
+        return nameTag;
+    }
 }

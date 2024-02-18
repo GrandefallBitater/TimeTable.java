@@ -6,11 +6,8 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class TimeTable {
+    private String dayOfWeek;
     private String time;
     private String name;
     private int numberOfAudience;
-
-    public TimeTable() {
-
-    }
 }
