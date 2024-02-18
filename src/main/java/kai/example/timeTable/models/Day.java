@@ -2,7 +2,6 @@ package kai.example.timeTable.models;
 
 import kai.example.timeTable.enums.DayOfWeek;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;

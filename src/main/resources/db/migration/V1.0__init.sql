@@ -62,7 +62,6 @@ CREATE TABLE main."Subject"
 (
     id serial NOT NULL,
     name text NOT NULL,
-    "countClass" smallint NOT NULL,
     "typeSubject" smallint NOT NULL,
     PRIMARY KEY (id),
     CONSTRAINT "nameUnique" UNIQUE (name),
@@ -85,7 +84,7 @@ insert into main."Equipment" ("name") values ('Компьютеры');
 insert into main."Equipment" ("name") values ('Доска');
 insert into main."Equipment" ("name") values ('Проектор');
 
-CREATE TABLE main."SubjectEquiepment"
+CREATE TABLE main."SubjectEquipment"
 (
     "Subjectid" smallint NOT NULL,
     "Equipmentid" smallint NOT NULL,
@@ -188,14 +187,14 @@ insert into main."ClassTime" ("time") values ('16:40');
 CREATE TABLE main."TimeTable"
 (
     day smallint NOT NULL,
-    "Subject" smallint NOT NULL,
     "Group" smallint NOT NULL,
     "ClassTime" smallint NOT NULL,
+    "Subject" smallint NOT NULL,
     "Teacher" smallint NOT NULL,
     "Audience" smallint NOT NULL,
     "SubjectType" smallint NOT NULL,
-    PRIMARY KEY (day, "SubjectType", "Group", "ClassTime"),
-    CONSTRAINT "SubjectFK" FOREIGN KEY ("SubjectType")
+    PRIMARY KEY (day, "Group", "ClassTime"),
+    CONSTRAINT "SubjectFK" FOREIGN KEY ("Subject")
         REFERENCES main."Subject" (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
@@ -207,6 +206,16 @@ CREATE TABLE main."TimeTable"
         NOT VALID,
     CONSTRAINT "GroupFK" FOREIGN KEY ("Group")
         REFERENCES main."Group" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "TeacherFK" FOREIGN KEY ("Teacher")
+        REFERENCES main."Teacher" (id) MATCH SIMPLE
+        ON UPDATE CASCADE
+        ON DELETE CASCADE
+        NOT VALID,
+    CONSTRAINT "AudienceFK" FOREIGN KEY ("Audience")
+        REFERENCES main."Audience" (id) MATCH SIMPLE
         ON UPDATE CASCADE
         ON DELETE CASCADE
         NOT VALID,
