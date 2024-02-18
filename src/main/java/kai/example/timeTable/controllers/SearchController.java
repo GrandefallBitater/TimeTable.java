@@ -21,13 +21,13 @@ public class SearchController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public String handleFileUpload(@RequestParam("group") String group,
                                    Model model) {
-        model.addAttribute("timeTables", searchService.search(group));
+        model.addAttribute("timeTable", searchService.search(group));
         return "timeTableMain";
     }
 
     @GetMapping(value = "/search")
     public String handleFileUploadNotFound(Model model) {
-        model.addAttribute("timeTables", searchService.search("null"));
+        model.addAttribute("timeTable", searchService.search(""));
         return "timeTableMain";
     }
 }
