@@ -7,16 +7,20 @@ $(document).ready(function () {
     let audience = $('#createTimeTable > .UploadContainer > form > label:nth-child(1)');
     let teachers = $('#createTimeTable > .UploadContainer > form > label:nth-child(2)');
     let plan = $('#createTimeTable > .UploadContainer > form > label:nth-child(3)');
+    let group = $('#createTimeTable > .UploadContainer > form > label:nth-child(4)');
 
     $('#submit > input').hide();
     audience.hide();
     teachers.hide();
     plan.hide();
+    group.hide();
+
 
     $('#createTimeTable > .UploadContainer > div.buttonGroup > button:nth-child(1)').click( function () {
         audience.show();
         teachers.hide();
         plan.hide();
+        group.hide();
     });
 
 
@@ -24,12 +28,21 @@ $(document).ready(function () {
         audience.hide();
         teachers.show();
         plan.hide();
+        group.hide();
     });
 
     $('#createTimeTable > .UploadContainer > div.buttonGroup > button:nth-child(3)').click( function () {
         audience.hide();
         teachers.hide();
         plan.show();
+        group.hide();
+    });
+
+    $('#createTimeTable > .UploadContainer > div.buttonGroup > button:nth-child(4)').click( function () {
+        audience.hide();
+        teachers.hide();
+        plan.hide();
+        group.show();
     });
 
 
@@ -41,7 +54,7 @@ $(document).ready(function () {
             activeFileCount -= 1;
         }
         $(this).next().html(file.name);
-        if(activeFileCount === 3){
+        if(activeFileCount === 4){
             $('#submit > input').show();
         }
     });
