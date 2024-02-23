@@ -15,11 +15,11 @@ import java.io.IOException;
 public class FileUploadService {
     private Boolean isError = false;
 
-    //TODO попробуй всё таки сделать здесь через один файл, очень муторно, когда принимается 3
-    public String prepareUploadFiles(MultipartFile plan, MultipartFile audience, MultipartFile teachers) {
+    public String prepareUploadFiles(MultipartFile plan, MultipartFile audience, MultipartFile teachers, MultipartFile groups) {
         uploadFiles(plan, "src/main/resources/files/plan.txt");
         uploadFiles(audience, "src/main/resources/files/audience.txt");
         uploadFiles(teachers, "src/main/resources/files/teachers.txt");
+        uploadFiles(groups, "src/main/resources/files/groups.txt");
         if (isError) {
             return "Файлы загрузить не удалось";
         } else {
