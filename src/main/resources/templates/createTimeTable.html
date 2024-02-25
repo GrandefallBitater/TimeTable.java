@@ -5,7 +5,7 @@
     <title>Telekanal</title>
     <script th:src="@{jQuery.js}"></script>
     <script th:src="@{createTimeTableScript.js}"></script>
-    <script src="uploadFiles/dragAndDropScript.js"></script>
+    <script th:src="@{refreshTimeTableScript.js}"></script>
     <link rel="stylesheet" href="uploadFiles/inputStyles.css">
 
     <div th:replace="fragments/header :: header-css"></div>
@@ -26,13 +26,6 @@
             Расписание
         </h1>
         <hr>
-    </div>
-
-    <div>
-        <div class="form-check form-switch form-check-reverse" id="radioSwitch">
-            <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-            <label class="form-check-label" for="flexSwitchCheckDefault">Редактирование расписания</label>
-        </div>
     </div>
 
     <div id="createTimeTable">
@@ -76,10 +69,6 @@
             </div>
         </div>
     </div>
-    <div id="refreshTimeTable">
-        <h1>редактирование расписания</h1>
-    </div>
-
 </div>
 <hr>
 
