@@ -34,23 +34,23 @@
           <th></th>
         </tr>
         <tr th:each = "session1 : ${day.getSessions()}">
-          <td>
+          <td id="nameTimeTable">
             <p th:text="${session1.getSubjectName()}">
           </td>
-          <td>
+          <td id="TimeTimeTable">
             <p th:text = "${session1.getTime()}">
           </td>
-          <td>
+          <td id="ANumTimeTable">
             <p th:text="${session1.getAudienceNumber()}">
           </td>
-          <td>
+          <td id="TeacherTimeTable">
             <p th:text="${session1.getTeacherName()}">
           </td>
-          <td>
+          <td id="typeTimeTable">
             <p th:text="${session1.getSubjectType()}">
           </td>
           <td>
-            <a class="ref" href="">ред</a>
+            <button class="refreshButton">ред</button>
           </td>
         </tr>
       </table>
@@ -58,6 +58,48 @@
   </div>
 </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">редактирование занятия</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="/refreshSession" id="refreshForm" method="post">
+          <div class="form-group">
+            <label for="lesson-name" class="col-form-label">название</label>
+            <input type="text" class="form-control" id="lesson-name" name="lesson-name">
+          </div>
+          <div class="form-group">
+            <label for="time" class="col-form-label">время</label>
+            <input type="text" class="form-control" id="time" name="time">
+          </div>
+          <div class="form-group">
+            <label for="audienceNumber" class="col-form-label">номер аудитории</label>
+            <input type="text" class="form-control" id="audienceNumber" name="audienceNumber">
+          </div>
+          <div class="form-group">
+            <label for="teacher" class="col-form-label">преподаватель</label>
+            <input type="text" class="form-control" id="teacher" name="teacher">
+          </div>
+          <div class="form-group">
+            <label for="type" class="col-form-label">тип</label>
+            <input type="text" class="form-control" id="type" name="type">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">закрыть</button>
+        <button type="button" class="btn btn-primary" id="submit">сохранить</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div th:replace="fragments/footer :: footer"></div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js" integrity="sha384-fbbOQedDUMZZ5KreZpsbe1LCZPVmfTnH7ois6mU1QK+m14rQ1l2bGBq41eYeM/fS" crossorigin="anonymous"></script>
