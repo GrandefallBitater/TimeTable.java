@@ -6,6 +6,8 @@
 
     <script th:src="@{jQuery.js}"></script>
     <script th:src="@{changeUser/changeUserScript.js}"></script>
+    <script th:src="@{createUser/createUserScript.js}"></script>
+    <script th:src="@{deleteUser/deleteUserScript.js}"></script>
 
     <div th:replace="fragments/header :: header-css"></div>
     <div th:replace="fragments/footer :: footer-css"></div>
@@ -30,12 +32,10 @@
               <tr>
                   <td>Имя</td>
                   <td>пароль</td>
-                  <td>статус</td>
-                  <td>уровень доступа</td>
+                  <td>статус</td>                  <td>уровень доступа</td>
+                  <td></td>
                   <td>
-                      <form action="/user/create", method="post">
-                          <button class="btn btn-dark" type="submit">добавить</button>
-                      </form>
+                      <button class="btn btn-dark" type="button" id="createUserButton">добавить</button>
                   </td>
               </tr>
               <tr th:each = "user : ${users}">
@@ -45,6 +45,9 @@
                   <td th:text = "${user.getRole()}" id="viewRole"></td>
                   <td>
                       <button class="btn btn-light" type="button" id="changeUserButton" th:data-oldUserName = "${user.getName()}">изменить</button>
+                  </td>
+                  <td>
+                      <button class="btn btn-light" type="button" id="deleteUserButton" th:data-username = "${user.getName()}">удалить</button>
                   </td>
               </tr>
           </table>
@@ -115,7 +118,71 @@
                 </div>
             </div>
 
+            <div class="modal fade" id="createModal" tabindex="-1" role="dialog" aria-labelledby="createModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="createModalLabel">редактирование пользователя</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="createModalCloseButton">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="createUserForm">
+                                <div class="form-group">
+                                    <label for="createUsername" class="col-form-label">имя</label>
+                                    <input type="text" class="form-control" id="createUsername">
+                                </div>
+                                <div class="form-group">
+                                    <label for="createPassword" class="col-form-label">пароль</label>
+                                    <input type="text" class="form-control" id="createPassword">
+                                </div>
+                                <div class="form-group">
+                                    <label for="createEnabled" class="col-form-label">включен</label>
+                                    <!--                                    <input type="text" class="form-control" id="enabled">-->
+                                    <select name="enabled" id="createEnabled">
+                                        <option value="true" selected>ДА</option>
+                                        <option value="false">НЕТ</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="createRole" class="col-form-label">роль</label>
+                                    <!--                                    <input type="text" class="form-control" id="role">-->
+                                    <select name="role" id="createRole">
+                                        <option value="user" selected>Студент</option>
+                                        <option value="admin">Администратор</option>
+                                        <option value="teacher">Преподаватель</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" id="createModalCloseButton" data-dismiss="modal">закрыть</button>
+                            <button type="button" class="btn btn-primary" id="submitCreateUser">сохранить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
+            <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="deleteModalLabel">Подождите!</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="deleteModalCloseButton">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <p>вы действительно хотите удалить этого пользователя?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteModalCloseButton">нет</button>
+                            <button type="button" class="btn btn-primary" id="submitDeleteUser" data-username = "null">да</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div th:replace="fragments/footer :: footer"></div>
 

@@ -65,22 +65,32 @@ public class UserService {
         return "изменение прошло успешно";
     }
 
-    public void createUser(User user) {
-        TemplateConnection connection = new TemplateConnection();
-        JdbcTemplate jdbcTemplate = connection.createConnection();
-        String SQL = "insert into users(username, password, enabled) values(?,?,?)";
-        jdbcTemplate.update(SQL, user.getName(), "{noop}" + user.getPassword(), user.getEnabled());
-        SQL = "insert into authorities(username, authority) values(?,?)";
-        jdbcTemplate.update(SQL, user.getName(), "ROLE_" + user.getRole().toUpperCase());
+    public String createUser(User user) {
+        try {
+            TemplateConnection connection = new TemplateConnection();
+            JdbcTemplate jdbcTemplate = connection.createConnection();
+            String SQL = "insert into users(username, password, enabled) values(?,?,?)";
+            jdbcTemplate.update(SQL, user.getName(), "{noop}" + user.getPassword(), user.getEnabled());
+            SQL = "insert into authorities(username, authority) values(?,?)";
+            jdbcTemplate.update(SQL, user.getName(), "ROLE_" + user.getRole().toUpperCase());
+        }catch (Exception e) {
+            return "что-то пошло не так";
+        }
+        return "добавление прошло успешно";
     }
 
-    public void removeUser(User user) {
-        TemplateConnection connection = new TemplateConnection();
-        JdbcTemplate jdbcTemplate = connection.createConnection();
-        String SQL = "delete from authorities where username = ?";
-        jdbcTemplate.update(SQL, user.getName());
-        SQL = "delete from users where username = ?";
-        jdbcTemplate.update(SQL, user.getName());
+    public String removeUser(User user) {
+        try {
+            TemplateConnection connection = new TemplateConnection();
+            JdbcTemplate jdbcTemplate = connection.createConnection();
+            String SQL = "delete from authorities where username = ?";
+            jdbcTemplate.update(SQL, user.getName());
+            SQL = "delete from users where username = ?";
+            jdbcTemplate.update(SQL, user.getName());
+        }catch (Exception e) {
+            return "что-то пошло не так";
+        }
+        return "удаление прошло успешно";
     }
 
 }
