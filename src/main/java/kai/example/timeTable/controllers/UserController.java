@@ -1,14 +1,12 @@
 package kai.example.timeTable.controllers;
 
 import kai.example.timeTable.models.User;
+import kai.example.timeTable.models.UserJson;
 import kai.example.timeTable.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserController {
@@ -37,20 +35,12 @@ public class UserController {
         return "createUser";
     }
 
-    @RequestMapping(value = "/user/change", method = RequestMethod.POST)
-    public String postChangeUser(@RequestParam("user") String username, Model model) {
-        model.addAttribute("user", userService.findUser(username));
-        return "changeUser";
+    @RequestMapping(value = "/changeUser", method = RequestMethod.POST)
+    public @ResponseBody String postChangeUser(@RequestBody UserJson JSON) {
+        User user = new User(JSON.getUsername(), JSON.getPassword(), JSON.getEnabled(), JSON.getRole());
+        String Message = userService.changeUser(user, JSON.getOldUserName());
+        return Message;
     }
-
-    @GetMapping(value = "/user/change")
-    public String getChangeUser(Model model) {
-        User user = new User();
-        user.setName("null");
-        model.addAttribute("user", user);
-        return "changeUser";
-    }
-
     @RequestMapping(value = "/user/change/refresh", method = RequestMethod.POST)
     public String postChangeRefreshUser(@RequestParam("username") String username,
                                         @RequestParam("password") String password,

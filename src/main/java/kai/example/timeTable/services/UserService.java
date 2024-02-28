@@ -50,14 +50,19 @@ public class UserService {
         return user.get(0);
     }
 
-    public void changeUser(User user, String oldName) {
-        TemplateConnection connection = new TemplateConnection();
-        JdbcTemplate jdbcTemplate = connection.createConnection();
-        String SQL = "update users set username = ?, password = ?, enabled = ? where username = ?";
-        jdbcTemplate.update(SQL, user.getName(), "{noop}" + user.getPassword(), user.getEnabled(), oldName);
-        SQL = "update authorities set authority = ? where username = ?";
-        String role = "ROLE_" + user.getRole().toUpperCase();
-        jdbcTemplate.update(SQL, role, user.getName());
+    public String changeUser(User user, String oldName) {
+        try {
+            TemplateConnection connection = new TemplateConnection();
+            JdbcTemplate jdbcTemplate = connection.createConnection();
+            String SQL = "update users set username = ?, password = ?, enabled = ? where username = ?";
+            jdbcTemplate.update(SQL, user.getName(), "{noop}" + user.getPassword(), user.getEnabled(), oldName);
+            SQL = "update authorities set authority = ? where username = ?";
+            String role = "ROLE_" + user.getRole().toUpperCase();
+            jdbcTemplate.update(SQL, role, user.getName());
+        } catch (Exception e) {
+            return "что-то пошло не так";
+        }
+        return "изменение прошло успешно";
     }
 
     public void createUser(User user) {
