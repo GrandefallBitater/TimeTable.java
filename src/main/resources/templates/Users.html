@@ -39,10 +39,10 @@
                   </td>
               </tr>
               <tr th:each = "user : ${users}">
-                  <td th:text = "${user.getName()}"></td>
-                  <td th:text = "${user.getPassword()}"></td>
-                  <td th:text = "${user.getEnabled()}"></td>
-                  <td th:text = "${user.getRole()}"></td>
+                  <td th:text = "${user.getName()}" id="viewUserName"></td>
+                  <td th:text = "${user.getPassword()}" id="viewPassword"></td>
+                  <td th:text = "${user.getEnabled()}" id="viewEnabled"></td>
+                  <td th:text = "${user.getRole()}" id="viewRole"></td>
                   <td>
                       <button class="btn btn-light" type="button" id="changeUserButton" th:data-oldUserName = "${user.getName()}">изменить</button>
                   </td>
