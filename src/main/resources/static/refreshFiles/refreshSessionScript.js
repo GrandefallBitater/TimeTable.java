@@ -27,11 +27,11 @@ $(document).ready(function () {
         let Session = {
             "id":  $('#refreshSessionSubmitButton').attr("data-id"),
             "teacherName": teacher,
-            "time": $('#refreshSubjectType').value,
+            "time": $('#refreshSubjectType').val(),
             "groupNumber": "",
             "SubjectName": subjectName,
             "audienceNumber": audienceNumber,
-            "SubjectType": $('#refreshSubjectTime').value,
+            "SubjectType": $('#refreshSubjectTime').val(),
             "day": ""
         }
 

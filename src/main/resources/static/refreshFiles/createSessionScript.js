@@ -23,11 +23,11 @@ $(document).ready(function () {
         let Session = {
             "id": 0,
             "teacherName": teacher,
-            "time": $('#createSubjectType').value,
+            "time": $('#createSubjectType').val(),
             "groupNumber": $('#foundedTimeTable').attr("data-group"),
             "SubjectName": subjectName,
             "audienceNumber": audienceNumber,
-            "SubjectType": $('#createSubjectTime').value,
+            "SubjectType": $('#createSubjectTime').val(),
             "day": $('#createSessionSubmitButton').attr("data-id")
         }
 
