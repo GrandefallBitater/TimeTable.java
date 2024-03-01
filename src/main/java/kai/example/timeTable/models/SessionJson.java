@@ -3,7 +3,7 @@ package kai.example.timeTable.models;
 import lombok.Getter;
 
 @Getter
-public class Session {
+public class SessionJson {
     private final Integer id;
     private final String time;
     private final String teacherName;
@@ -11,9 +11,10 @@ public class Session {
     private final Integer audienceNumber;
     private final String SubjectName;
     private final String SubjectType;
+    private final String day;
 
-    public Session(String time, String TeacherName, Integer groupNumber, Integer audienceNumber,
-                   String SubjectName, String subjectType, Integer id) {
+    public SessionJson(String time, String TeacherName, Integer groupNumber, Integer audienceNumber,
+                       String SubjectName, String subjectType, Integer id, String day) {
         this.time = time;
         this.audienceNumber = audienceNumber;
         this.groupNumber = groupNumber;
@@ -21,5 +22,6 @@ public class Session {
         this.SubjectName = SubjectName;
         this.teacherName = TeacherName;
         this.id = id;
+        this.day = day;
     }
 }

@@ -1,7 +1,6 @@
 $(document).ready(function () {
 
     $('#createUserButton').click( function () {
-        console.log(1);
         $('#createModal').modal("show");
     });
 

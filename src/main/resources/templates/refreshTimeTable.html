@@ -4,7 +4,9 @@
   <meta charset="UTF-8">
   <title>Telekanal</title>
   <script th:src="@{jQuery.js}"></script>
-  <script th:src="@{refreshTimeTableScript.js}"></script>
+  <script th:src="@{refreshFiles/refreshSessionScript.js}"></script>
+  <script th:src="@{refreshFiles/createSessionScript.js}"></script>
+  <script th:src="@{refreshFiles/deleteSessionScript.js}"></script>
   <link rel="stylesheet" href="refreshFiles/refreshStyles.css">
   <link rel="stylesheet" href="../mainFiles/main.css">
 
@@ -17,7 +19,7 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div id="phoneImage" style="background: url(../phon.jpg);">
-<div id="foundedTimeTable">
+<div id="foundedTimeTable" th:data-group = "${group}">
   <div th:if = "${timeTable == null}">
     <h1>расписание не найдено</h1>
   </div>
@@ -32,6 +34,10 @@
           <th>преподаватель</th>
           <th>тип</th>
           <th></th>
+          <th></th>
+          <th>
+            <button id="createSessionButton" th:data-day = "${day.getDayOfWeek().getDayName()}">+</button>
+          </th>
         </tr>
         <tr th:each = "session1 : ${day.getSessions()}">
           <td id="nameTimeTable">
@@ -50,7 +56,10 @@
             <p th:text="${session1.getSubjectType()}">
           </td>
           <td>
-            <button class="refreshButton">ред</button>
+            <button id="refreshSessionButton" th:data-id = "${session1.getId()}">ред</button>
+          </td>
+          <td>
+            <button id="deleteSessionButton" th:data-id = "${session1.getId()}">удалить</button>
           </td>
         </tr>
       </table>
@@ -59,42 +68,144 @@
 </div>
 </div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">редактирование занятия</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <h5 class="modal-title" id="deleteModalLabel">Подождите!</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="deleteModalCloseButton">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="/refreshSession" id="refreshForm" method="post">
+        <p>вы действительно хотите удалить это занятие?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="deleteModalCloseButton">нет</button>
+        <button type="button" class="btn btn-primary" id="submitDeleteSession" data-id = "null">да</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="errorModalCenter" tabindex="-1" role="dialog" aria-labelledby="errorModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="errorModalLongTitle">ошибка</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="errorModalCenterCloseButton">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p id="errorMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" id="errorModalCenterCloseButton">ok</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="createSessionModal" tabindex="-1" role="dialog" aria-labelledby="createSessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createSessionModalLabel">редактирование занятия</h5>
+        <button type="button" class="close" id="createSessionCloseButton" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createSessionForm">
           <div class="form-group">
-            <label for="lesson-name" class="col-form-label">название</label>
-            <input type="text" class="form-control" id="lesson-name" name="lesson-name">
+            <label for="createSubjectName" class="col-form-label">название</label>
+            <input type="text" class="form-control" id="createSubjectName" name="SubjectName">
           </div>
           <div class="form-group">
-            <label for="time" class="col-form-label">время</label>
-            <input type="text" class="form-control" id="time" name="time">
+            <label for="createAudienceNumber" class="col-form-label">номер аудитории</label>
+            <input type="text" class="form-control" id="createAudienceNumber" name="audienceNumber">
           </div>
           <div class="form-group">
-            <label for="audienceNumber" class="col-form-label">номер аудитории</label>
-            <input type="text" class="form-control" id="audienceNumber" name="audienceNumber">
+            <label for="createTeacher" class="col-form-label">преподаватель</label>
+            <input type="text" class="form-control" id="createTeacher" name="teacher">
           </div>
           <div class="form-group">
-            <label for="teacher" class="col-form-label">преподаватель</label>
-            <input type="text" class="form-control" id="teacher" name="teacher">
+            <label for="createSubjectType" class="col-form-label">тип</label>
+            <select name="SubjectType" id="createSubjectType">
+              <option value="LECTURE" selected>Лекция</option>
+              <option value="LABORATORY">Лабораторная</option>
+              <option value="PRACTICE">Практика</option>
+            </select>
           </div>
           <div class="form-group">
-            <label for="type" class="col-form-label">тип</label>
-            <input type="text" class="form-control" id="type" name="type">
+            <label for="createSubjectTime" class="col-form-label">время</label>
+            <select name="Time" id="createSubjectTime">
+              <option value="FIRST_CLASS" selected>8:00</option>
+              <option value="SECOND_CLASS">9:40</option>
+              <option value="THIRD_CLASS">11:20</option>
+              <option value="FOURTH_CLASS">13:30</option>
+              <option value="FIFTH_CLASS">15:10</option>
+              <option value="SIXTH_CLASS">16:40</option>
+            </select>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" id="close" data-dismiss="modal">закрыть</button>
-        <button type="button" class="btn btn-primary" id="submit">сохранить</button>
+        <button type="button" class="btn btn-secondary" id="createSessionCloseButton" data-dismiss="modal">закрыть</button>
+        <button type="button" class="btn btn-primary" id="createSessionSubmitButton" data-day = "null">создать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="refreshSessionModal" tabindex="-1" role="dialog" aria-labelledby="refreshSessionModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="refreshSessionModalLabel">редактирование занятия</h5>
+        <button type="button" class="close" id="refreshSessionCloseButton" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="createSessionForm">
+          <div class="form-group">
+            <label for="refreshSubjectName" class="col-form-label">название</label>
+            <input type="text" class="form-control" id="refreshSubjectName" name="SubjectName">
+          </div>
+          <div class="form-group">
+            <label for="refreshAudienceNumber" class="col-form-label">номер аудитории</label>
+            <input type="text" class="form-control" id="refreshAudienceNumber" name="audienceNumber">
+          </div>
+          <div class="form-group">
+            <label for="refreshTeacher" class="col-form-label">преподаватель</label>
+            <input type="text" class="form-control" id="refreshTeacher" name="teacher">
+          </div>
+          <div class="form-group">
+            <label for="refreshSubjectType" class="col-form-label">тип</label>
+            <select name="SubjectType" id="refreshSubjectType">
+              <option value="LECTURE" selected>Лекция</option>
+              <option value="LABORATORY">Лабораторная</option>
+              <option value="PRACTICE">Практика</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="refreshSubjectTime" class="col-form-label">время</label>
+            <select name="Time" id="refreshSubjectTime">
+              <option value="FIRST_CLASS" selected>8:00</option>
+              <option value="SECOND_CLASS">9:40</option>
+              <option value="THIRD_CLASS">11:20</option>
+              <option value="FOURTH_CLASS">13:30</option>
+              <option value="FIFTH_CLASS">15:10</option>
+              <option value="SIXTH_CLASS">16:40</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="refreshSessionCloseButton" data-dismiss="modal">закрыть</button>
+        <button type="button" class="btn btn-primary" id="refreshSessionSubmitButton" data-id = "null">создать</button>
       </div>
     </div>
   </div>

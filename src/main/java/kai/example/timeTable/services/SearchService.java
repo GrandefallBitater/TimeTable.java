@@ -11,23 +11,10 @@ import java.util.Objects;
 
 @Service
 public class SearchService {
-
-    //условное обозначение поиска, как придумаем, как хранить расписание, изменим
-//    public List<TimeTable> search(String group) {
-//        List<TimeTable> listTimeTables = new ArrayList<>();
-//        if (Objects.equals(group, "")) {
-//            return listTimeTables;
-//        }
-//        listTimeTables.add(new TimeTable("Понедельник","11:40", "1", 12));
-//        listTimeTables.add(new TimeTable("Вторник","12:50", "2", 12));
-//        listTimeTables.add(new TimeTable("Среда","13:30", "3", 12));
-//        return listTimeTables;
-//    }
-
     public TimeTable search(String group) {
         TimeTable timeTable = new TimeTable();
         Session session = new Session(ClassTime.FIRST_CLASS.toString(), "sotich", 4410,
-                331, "SAOD", TypeSubject.LECTURE.toString());
+                331, "SAOD", TypeSubject.LECTURE.toString(), 1);
         if (Objects.equals(group, "")) {
             return null;
         }

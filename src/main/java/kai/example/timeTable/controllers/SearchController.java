@@ -28,10 +28,11 @@ public class SearchController {
         model.addAttribute("timeTable", searchService.search(group));
         return "timeTableMain";
     }
-    @RequestMapping (value = "/refreshView", method = RequestMethod.POST)
+    @RequestMapping (value = "/searchRefreshView", method = RequestMethod.POST)
     public String searchRefresh(Model model,
                                               @RequestParam("group") String group) {
         model.addAttribute("timeTable", searchService.search(group));
+        model.addAttribute("group", group);
         return "refreshTimeTable";
     }
 }
