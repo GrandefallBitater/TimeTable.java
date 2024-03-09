@@ -64,7 +64,6 @@ CREATE TABLE main."Subject"
     name text NOT NULL,
     "typeSubject" smallint NOT NULL,
     PRIMARY KEY (id),
-    CONSTRAINT "nameUnique" UNIQUE (name),
     CONSTRAINT "typeSubjectFK" FOREIGN KEY ("typeSubject")
         REFERENCES main."typeSubject" (id) MATCH SIMPLE
         ON UPDATE CASCADE

@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -53,23 +54,18 @@ public class SearchService {
             sqlWorker = new SQLWorker(connector, new SQLRequests());
             int groupNumber = Integer.parseInt(group);
             int groupId = sqlWorker.getGroupId(groupNumber);
-            ResultSet result = sqlWorker.generateSelectTimetableGroup(groupId);
-            while (result.next()) {
-                int timeId = result.getInt("ClassTime");
-                int dayId = result.getInt("day");
-                int subjectId = result.getInt("Subject");
-                int teacherId = result.getInt("Teacher");
-                int audienceId = result.getInt("Audience");
-                int subjectTypeId = result.getInt("SubjectType");
-                String time = ClassTime.getById(timeId);
-                String subjectType = TypeSubject.getById(subjectTypeId);
-                int audienceNumber = sqlWorker.generateSelectAudienceNumber(audienceId);
-                String subjectName = sqlWorker.generateSelectSubjectName(subjectId);
-                String teacherName = sqlWorker.generateSelectTeacherName(teacherId);
+            List<Map<String,Integer>> mapList = sqlWorker.generateSelectTimetableGroup(groupId);
+            for(var map: mapList) {
+                String time = ClassTime.getById(map.get("ClassTime"));
+                String subjectType = TypeSubject.getById(map.get("SubjectType"));
+                int audienceNumber = sqlWorker.generateSelectAudienceNumber(map.get("Audience"));
+                String subjectName = sqlWorker.generateSelectSubjectName(map.get("Subject"));
+                String teacherName = sqlWorker.generateSelectTeacherName(map.get("Teacher"));
                 Session session = new Session(time, teacherName, groupNumber, audienceNumber, subjectName,
-                        subjectType, dayId);
+                        subjectType, map.get("day"));
                 sessions.add(session);
             }
+            return sessions;
         } catch (SQLException e) {
             System.out.println(e.getSQLState() + "\n\n" + e.getMessage());
         }

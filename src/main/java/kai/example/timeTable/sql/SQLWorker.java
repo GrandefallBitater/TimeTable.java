@@ -2,13 +2,19 @@ package kai.example.timeTable.sql;
 
 import kai.example.timeTable.entity.*;
 import kai.example.timeTable.enums.ClassTime;
+import kai.example.timeTable.enums.TypeSubject;
+import kai.example.timeTable.models.Session;
 import lombok.AllArgsConstructor;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @AllArgsConstructor
 public class SQLWorker {
     private final Connection connection;
@@ -35,9 +41,28 @@ public class SQLWorker {
         }
         return null;
     }
-    public ResultSet generateSelectTimetableGroup(int groupId) {
+    public List<Map<String,Integer>> generateSelectTimetableGroup(int groupId) {
+        List<Session> sessions = new ArrayList<>();
         try (Statement statement = connection.createStatement()) {
-            return statement.executeQuery(sqlRequests.selectTimetableGroup(groupId));
+            ResultSet result = statement.executeQuery(sqlRequests.selectTimetableGroup(groupId));
+            List<Map<String,Integer>> mapList = new ArrayList<>();
+            while (result.next()) {
+                Map<String,Integer> map = new HashMap<>();
+                int timeId = result.getInt("ClassTime");
+                int dayId = result.getInt("day");
+                int subjectId = result.getInt("Subject");
+                int teacherId = result.getInt("Teacher");
+                int audienceId = result.getInt("Audience");
+                int subjectTypeId = result.getInt("SubjectType");
+                map.put("ClassTime",timeId);
+                map.put("day",dayId);
+                map.put("Subject",subjectId);
+                map.put("Teacher",teacherId);
+                map.put("Audience",audienceId);
+                map.put("SubjectType",subjectTypeId);
+                mapList.add(map);
+            }
+            return mapList;
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         } catch (Exception e) {
@@ -49,7 +74,21 @@ public class SQLWorker {
         try (Statement statement = connection.createStatement()) {
             ResultSet result = statement.executeQuery(sqlRequests.selectAudienceNumber(audienceId));
             result.next();
-            return result.getInt("numberAudience");
+            int number = result.getInt("numberAudience");
+            return number;
+        } catch (SQLException e) {
+            System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public Integer generateSelectGroupNumber(int groupId) {
+        try (Statement statement = connection.createStatement()) {
+            ResultSet result = statement.executeQuery(sqlRequests.selectGroupNumber(groupId));
+            result.next();
+            int number = result.getInt("numberGroup");
+            return number;
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         } catch (Exception e) {
@@ -61,7 +100,8 @@ public class SQLWorker {
         try (Statement statement = connection.createStatement()) {
             ResultSet result = statement.executeQuery(sqlRequests.selectSubjectName(subjectId));
             result.next();
-            return result.getString("name");
+            String name = result.getString("name");
+            return name;
         } catch (SQLException e) {
             System.err.format("SQL State: %s\n%s", e.getSQLState(), e.getMessage());
         } catch (Exception e) {
@@ -83,7 +123,7 @@ public class SQLWorker {
     }
     public ResultSet generateSelectTimetableTeacher(int teacherId) {
         try (Statement statement = connection.createStatement()) {
-            return statement.executeQuery(sqlRequests.selectTimetableGroup(teacherId));
+            return statement.executeQuery(sqlRequests.selectTimetableTeacher(teacherId));
             /*while (result.next()) {
                 System.out.println(result.getInt("id_company")+" "+result.getString("name_company"));
             }*/
