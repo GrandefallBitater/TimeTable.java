@@ -18,7 +18,7 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-<div id="phoneImage" style="background: url(../phon.jpg);">
+<div id="phoneImage" style="background: url(../phon.jpg); min-height: 610px">
 <div id="foundedTimeTable" th:data-group = "${group}">
   <div th:if = "${timeTable == null}">
     <h1>расписание не найдено</h1>
