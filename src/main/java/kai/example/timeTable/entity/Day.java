@@ -33,7 +33,7 @@ public class Day {
         gs.get(time).get(audience).get(teacher).put(subject, group);
     }
 
-    private String getGroups(List<StudentGroup> groups) {
+    public String getGroups(List<StudentGroup> groups) {
         StringBuilder sb = new StringBuilder();
         if (groups.size() == 1) {
             sb.append(groups.get(0));
@@ -49,13 +49,13 @@ public class Day {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append(dayOfWeek.getDayName()).append(": \n");
+        sb.append("-").append(dayOfWeek.getDayName()).append(": \n");
         List<ClassTime> dayTimes = gs.keySet().stream().sorted(new ClassTime.ClassTimeComparator()).toList();
         for (ClassTime time : dayTimes) {
             for (Audience audience : gs.get(time).keySet()) {
                 for (Teacher teacher : gs.get(time).get(audience).keySet()) {
                     for (Subject subject : gs.get(time).get(audience).get(teacher).keySet()) {
-                        sb.append("    ").append(time).append(" ").append(subject).append(" ")
+                        sb.append(time).append(" ").append(subject).append(" ")
                                 .append(teacher).append(" ").append(audience).append(" ")
                                 .append(getGroups(gs.get(time).get(audience).get(teacher).get(subject))).append("\n");
                     }

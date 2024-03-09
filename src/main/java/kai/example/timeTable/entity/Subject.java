@@ -48,8 +48,8 @@ public class Subject {
 
     @Override
     public String toString() {
-        return (countClassPerWeek > 0) ? subjectName + " (" + typeSubject.getNameTag() + ") " :
-                subjectName + "[" + countAllClass + "]" + " (" + typeSubject.getNameTag() + ") ";
+        return (countClassPerWeek > 0) ? subjectName + " " + typeSubject.getNameTag() :
+                subjectName + " " + countAllClass  + " " + typeSubject.getNameTag();
 
     }
 

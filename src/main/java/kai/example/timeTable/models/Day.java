@@ -20,4 +20,7 @@ public class Day {
     public void addSession (Session session) {
         Sessions.add(session);
     }
+    public void addSessions (List<Session> sessions) {
+        Sessions.addAll(sessions);
+    }
 }
