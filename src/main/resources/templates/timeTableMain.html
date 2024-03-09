@@ -29,15 +29,15 @@
         <div th:if = "${timeTable != null}">
             <div th:each = "day : ${timeTable.getDays()}" id="timeTableDay">
                 <h1 th:text="${day.getDayOfWeek().getDayName()}"></h1>
-                <table>
-                    <tr>
+                <table class="table_blur">
+                    <tr id="table_head">
                         <th>название</th>
                         <th>время</th>
                         <th>номер аудитории</th>
                         <th>преподаватель</th>
                         <th>тип</th>
                     </tr>
-                    <tr th:each = "session1 : ${day.getSessions()}">
+                    <tr class="table_body" th:each = "session1 : ${day.getSessions()}">
                         <td>
                             <p th:text="${session1.getSubjectName()}">
                         </td>

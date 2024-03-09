@@ -26,8 +26,8 @@
   <div th:if = "${timeTable != null}">
     <div th:each = "day : ${timeTable.getDays()}" id="timeTableDay">
       <h1 th:text="${day.getDayOfWeek().getDayName()}"></h1>
-      <table>
-        <tr>
+      <table class="table_blur">
+        <tr id="table_head">
           <th>название</th>
           <th>время</th>
           <th>номер аудитории</th>
@@ -36,10 +36,10 @@
           <th></th>
           <th></th>
           <th>
-            <button id="createSessionButton" th:data-day = "${day.getDayOfWeek().getDayName()}">+</button>
+            <button id="createSessionButton" class="styleButtonGreen" th:data-day = "${day.getDayOfWeek().getDayName()}">добавить</button>
           </th>
         </tr>
-        <tr th:each = "session1 : ${day.getSessions()}">
+        <tr  class="table_body" th:each = "session1 : ${day.getSessions()}">
           <td id="nameTimeTable">
             <p th:text="${session1.getSubjectName()}">
           </td>
@@ -56,10 +56,10 @@
             <p th:text="${session1.getSubjectType()}">
           </td>
           <td>
-            <button id="refreshSessionButton" th:data-id = "${session1.getId()}">ред</button>
+            <button id="refreshSessionButton" class="styleButtonGreen" th:data-id = "${session1.getId()}">редактировать</button>
           </td>
           <td>
-            <button id="deleteSessionButton" th:data-id = "${session1.getId()}">удалить</button>
+            <button id="deleteSessionButton" class="styleButtonRed" th:data-id = "${session1.getId()}">удалить</button>
           </td>
         </tr>
       </table>
