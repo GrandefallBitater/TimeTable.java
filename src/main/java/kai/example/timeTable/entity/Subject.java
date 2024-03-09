@@ -25,6 +25,7 @@ public class Subject {
         this.equipments = equipments;
         this.countClassPerWeek = getCountClass(subjectHours);
         this.courseOfSubject = courseOfSubject;
+
     }
 
     private int getCountClass(int hours) {

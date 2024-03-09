@@ -33,6 +33,9 @@ public class CreateTimeTable {
 
 
     public void createTimeTable() {
+        for(Subject subject: subjects){
+            subject.fillGroupMap(groups.stream().filter(x->x.getNumberOfCourse() == subject.getCourseOfSubject()).toList());
+        }
         // Создание расписания на всю неделю
         for (DayOfWeek day : DayOfWeek.values()) {
             for (StudentGroup group : groups) {
