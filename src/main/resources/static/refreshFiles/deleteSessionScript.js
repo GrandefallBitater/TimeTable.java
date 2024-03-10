@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(document).on('click', '#deleteSessionButton', function () {
-       $('#submitDeleteSession').attr("data-id", $('#deleteSessionButton').attr("data-id"));
+       $('#submitDeleteSession').attr("data-id", $(this).attr("data-id"));
        $('#deleteModal').modal("show");
     });
 
