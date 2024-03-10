@@ -36,7 +36,7 @@
           <th></th>
           <th></th>
           <th>
-            <button id="createSessionButton" class="styleButtonGreen" th:data-day = "${day.getDayOfWeek().getDayName()}">добавить</button>
+            <button id="createSessionButton" class="styleButtonGreen" th:data-day = "${day.getDayOfWeek().getId()}">добавить</button>
           </th>
         </tr>
         <tr  class="table_body" th:each = "session1 : ${day.getSessions()}">

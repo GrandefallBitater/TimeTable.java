@@ -35,7 +35,7 @@ public class RefreshTimeTableController {
     @RequestMapping(value = "/createSession")
     public @ResponseBody String CreateSession(@RequestBody SessionJson sessionJson) {
         Session session = new Session(sessionJson.getTime(), sessionJson.getTeacherName(), sessionJson.getGroupNumber(),
-                sessionJson.getAudienceNumber(), sessionJson.getSubjectName(), sessionJson.getSubjectType(), 0);
+                sessionJson.getAudienceNumber(), sessionJson.getSubjectName(), sessionJson.getSubjectType(), Integer.parseInt(sessionJson.getDay()));
         return refreshTimeTableService.createSession(session, sessionJson.getGroupNumber(), sessionJson.getDay());
     }
 }
