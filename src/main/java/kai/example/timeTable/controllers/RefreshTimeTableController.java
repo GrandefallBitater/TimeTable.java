@@ -28,8 +28,8 @@ public class RefreshTimeTableController {
     }
 
     @RequestMapping(value = "/deleteSession")
-    public @ResponseBody String DeleteSession(@RequestBody Session session) {
-        return refreshTimeTableService.deleteSession(session.getId());
+    public @ResponseBody String DeleteSession(@RequestBody SessionJson sessionjson) {
+        return refreshTimeTableService.deleteSession(sessionjson.getId());
     }
 
     @RequestMapping(value = "/createSession")
