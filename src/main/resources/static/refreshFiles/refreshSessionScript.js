@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $(document).on('click', '#refreshSessionButton', function () {
         let lesson = $(this).parent().parent();
-        $('#refreshSessionSubmitButton').attr("data-id", $('#refreshSessionButton').attr("data-id"));
+        $('#refreshSessionSubmitButton').attr("data-id", $(this).attr("data-id"));
         $('#refreshSubjectName').val(lesson.children('#nameTimeTable').children().text());
         $('#refreshAudienceNumber').val(lesson.children('#ANumTimeTable').children().text());
         $('#refreshTeacher').val(lesson.children('#TeacherTimeTable').children().text());
