@@ -13,12 +13,12 @@ public class SessionJson {
     private final String SubjectType;
     private final String day;
 
-    public SessionJson(String time, String TeacherName, Integer groupNumber, Integer audienceNumber,
-                       String SubjectName, String subjectType, Integer id, String day) {
+    public SessionJson(String time, String TeacherName, String groupNumber, Integer audienceNumber,
+                       String SubjectName, String SubjectType, Integer id, String day) {
         this.time = time;
         this.audienceNumber = audienceNumber;
-        this.groupNumber = groupNumber;
-        this.SubjectType = subjectType;
+        this.groupNumber = Integer.parseInt(groupNumber);
+        this.SubjectType = SubjectType;
         this.SubjectName = SubjectName;
         this.teacherName = TeacherName;
         this.id = id;

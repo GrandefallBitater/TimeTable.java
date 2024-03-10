@@ -22,7 +22,7 @@ public class RefreshTimeTableController {
 
     @RequestMapping(value = "/refreshSession")
     public @ResponseBody String RefreshSession(@RequestBody SessionJson sessionJson) {
-        Session session = new Session(sessionJson.getId(), sessionJson.getTime(), sessionJson.getTeacherName(), 0,
+        Session session = new Session(sessionJson.getId(), sessionJson.getTime(), sessionJson.getTeacherName(), sessionJson.getGroupNumber(),
                 sessionJson.getAudienceNumber(), sessionJson.getSubjectName(), sessionJson.getSubjectType());
         return refreshTimeTableService.refreshSession(session);
     }

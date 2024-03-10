@@ -14,7 +14,7 @@ $(document).ready(function () {
             "id": $('#submitDeleteSession').attr("data-id"),
             "teacherName": "",
             "time": "",
-            "groupNumber": 0,
+            "groupNumber": $('#foundedTimeTable').attr("data-group"),
             "SubjectName": "",
             "audienceNumber": 0,
             "SubjectType": "",

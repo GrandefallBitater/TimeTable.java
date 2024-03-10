@@ -5,6 +5,29 @@ $(document).ready(function () {
         $('#refreshSubjectName').val(lesson.children('#nameTimeTable').children().text());
         $('#refreshAudienceNumber').val(lesson.children('#ANumTimeTable').children().text());
         $('#refreshTeacher').val(lesson.children('#TeacherTimeTable').children().text());
+        let SubjectType = lesson.children('#typeTimeTable').children().text();
+        if (SubjectType === "Лекция") {
+            $('#refreshSubjectType option:contains("Лекция")').prop('selected', true);
+        } else if(SubjectType === "Лабораторная работа") {
+            $('#refreshSubjectType option:contains("Лабораторная работа")').prop('selected', true);
+        }else {
+            $('#refreshSubjectType option:contains("Практика")').prop('selected', true);
+        }
+
+        let SubjectTime = lesson.children('#TimeTimeTable').children().text();
+        if (SubjectTime === "8:00") {
+            $('#refreshSubjectTime option:contains("8:00")').prop('selected', true);
+        } else if(SubjectTime === "9:40") {
+            $('#refreshSubjectTime option:contains("9:40")').prop('selected', true);
+        }else if(SubjectTime === "11:20") {
+            $('#refreshSubjectTime option:contains("11:20")').prop('selected', true);
+        }else if(SubjectTime === "13:30") {
+            $('#refreshSubjectTime option:contains("13:30")').prop('selected', true);
+        }else if(SubjectTime === "15:10") {
+            $('#refreshSubjectTime option:contains("15:10")').prop('selected', true);
+        } else if(SubjectTime === "16:40") {
+            $('#refreshSubjectTime option:contains("16:40")').prop('selected', true);
+        }
         $('#refreshSessionModal').modal("show");
     });
 
@@ -27,14 +50,14 @@ $(document).ready(function () {
         let Session = {
             "id":  $('#refreshSessionSubmitButton').attr("data-id"),
             "teacherName": teacher,
-            "time": $('#refreshSubjectType').val(),
-            "groupNumber": "",
+            "time": $('#refreshSubjectTime').val(),
+            "groupNumber": $('#foundedTimeTable').attr("data-group"),
             "SubjectName": subjectName,
             "audienceNumber": audienceNumber,
-            "SubjectType": $('#refreshSubjectTime').val(),
+            "SubjectType": $('#refreshSubjectType').val(),
             "day": ""
         }
-
+        console.log(Session);
         $.ajax({
             url: '/refreshSession',
             type: 'POST',
