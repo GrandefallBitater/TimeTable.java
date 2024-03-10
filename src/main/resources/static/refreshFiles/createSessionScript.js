@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(document).on('click', '#createSessionButton', function () {
-        $('#createSessionSubmitButton').attr("data-day", $('#createSessionButton').attr("data-day"));
+        $('#createSessionSubmitButton').attr("data-day", $(this).attr("data-day"));
         $('#createSessionModal').modal("show");
     });
 
@@ -23,13 +23,14 @@ $(document).ready(function () {
         let Session = {
             "id": 0,
             "teacherName": teacher,
-            "time": $('#createSubjectType').val(),
+            "time": $('#createSubjectTime').val(),
             "groupNumber": $('#foundedTimeTable').attr("data-group"),
             "SubjectName": subjectName,
             "audienceNumber": audienceNumber,
-            "SubjectType": $('#createSubjectTime').val(),
-            "day": $('#createSessionSubmitButton').attr("data-id")
+            "SubjectType": $('#createSubjectType').val(),
+            "day": $('#createSessionSubmitButton').attr("data-day")
         }
+        console.log(Session);
 
         $.ajax({
             url: '/createSession',

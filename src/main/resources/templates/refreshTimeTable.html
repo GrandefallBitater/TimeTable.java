@@ -36,7 +36,7 @@
           <th></th>
           <th></th>
           <th>
-            <button id="createSessionButton" class="styleButtonGreen" th:data-day = "${day.getDayOfWeek().getDayName()}">добавить</button>
+            <button id="createSessionButton" class="styleButtonGreen" th:data-day = "${day.getDayOfWeek().getId()}">добавить</button>
           </th>
         </tr>
         <tr  class="table_body" th:each = "session1 : ${day.getSessions()}">
@@ -186,7 +186,7 @@
             <label for="refreshSubjectType" class="col-form-label">тип</label>
             <select name="SubjectType" id="refreshSubjectType">
               <option value="LECTURE" selected>Лекция</option>
-              <option value="LABORATORY">Лабораторная</option>
+              <option value="LABORATORY">Лабораторная работа</option>
               <option value="PRACTICE">Практика</option>
             </select>
           </div>
