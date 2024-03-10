@@ -3,17 +3,28 @@ package kai.example.timeTable.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Objects;
+
 @Getter
 public class Session {
     private final Integer id;
     @Setter
     private Integer dayId;
-    private final String time;
+    @Setter
+    private  String time;
     private final String teacherName;
     private final Integer groupNumber;
     private final Integer audienceNumber;
     private final String SubjectName;
-    private final String SubjectType;
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(time);
+    }
+
+    @Setter
+    private String SubjectType;
     private static int serialId = 0;
 
     public Session(String time, String TeacherName, Integer groupNumber, Integer audienceNumber,
