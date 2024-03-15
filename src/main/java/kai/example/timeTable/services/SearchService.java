@@ -18,6 +18,9 @@ public class SearchService {
             return null;
         }
         List<Session> sessions = sessionService.searchDb(group);
+        if (sessions.size() == 0) {
+            return null;
+        }
         List<Session> mondaySessions = sessions.stream().filter(x -> x.getDayId() == 1).toList();
         List<Session> tuesdaySessions = sessions.stream().filter(x -> x.getDayId() == 2).toList();
         List<Session> wednesdaySessions = sessions.stream().filter(x -> x.getDayId() == 3).toList();

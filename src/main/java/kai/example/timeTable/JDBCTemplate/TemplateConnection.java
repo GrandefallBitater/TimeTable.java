@@ -9,7 +9,7 @@ public class TemplateConnection {
     public TemplateConnection() {
         this.dataSource = new DriverManagerDataSource();
         this.dataSource.setDriverClassName("org.postgresql.Driver");
-        this.dataSource.setUrl("jdbc:postgresql://localhost:5432/timeTable?currentSchema=main");
+        this.dataSource.setUrl("jdbc:postgresql://localhost:5432/TimeTable?currentSchema=main");
         this.dataSource.setPassword("ROOT");
         this.dataSource.setUsername("postgres");
     }
